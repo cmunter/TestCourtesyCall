@@ -1,4 +1,4 @@
-package com.munternet.app.courtesycall.alarm;
+package com.munternet.app.courtesycall.views;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
@@ -8,11 +8,11 @@ import android.view.View;
  * Created by chrtistianmunter on 3/17/17.
  */
 
-public class AlarmItemDividerDecoration  extends RecyclerView.ItemDecoration {
+public class AlarmItemViewDividerDecoration extends RecyclerView.ItemDecoration {
 
     private final int bottomBarHeight;
 
-    public AlarmItemDividerDecoration(int bottomBarHeight) {
+    public AlarmItemViewDividerDecoration(int bottomBarHeight) {
         this.bottomBarHeight = bottomBarHeight;
     }
 

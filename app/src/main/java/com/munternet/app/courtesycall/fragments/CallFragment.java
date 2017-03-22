@@ -15,15 +15,14 @@ import android.widget.TextView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.munternet.app.courtesycall.R;
-import com.munternet.app.courtesycall.alarm.AlarmAdapter;
-import com.munternet.app.courtesycall.alarm.AlarmItemDividerDecoration;
+import com.munternet.app.courtesycall.call.CallAdapter;
+import com.munternet.app.courtesycall.views.AlarmItemViewDividerDecoration;
 import com.munternet.app.courtesycall.models.AlarmModel;
 
 import org.joda.time.DateTime;
@@ -41,9 +40,9 @@ public class CallFragment extends Fragment {
     private static final boolean DEBUG_LIVE_FRAGMENT_LOG = false;
 
     private TextView alarmText;
-    private List<AlarmModel> alarmList = new ArrayList<>();
+    private List<AlarmModel> callList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private AlarmAdapter alarmAdapter;
+    private CallAdapter callAdapter;
 
     // private DatabaseReference databaseReference;
     private Query databaseQuery;
@@ -61,15 +60,15 @@ public class CallFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_call, container, false);
         alarmText = (TextView) rootView.findViewById(R.id.alarmText);
 
-        alarmAdapter = new AlarmAdapter(getActivity(), alarmList);
+        callAdapter = new CallAdapter(getActivity(), callList);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(alarmAdapter);
+        recyclerView.setAdapter(callAdapter);
 
         int bottomBarHeight = getResources().getDimensionPixelSize(R.dimen.alarm_list_bottom_padding);
-        recyclerView.addItemDecoration(new AlarmItemDividerDecoration(bottomBarHeight));
+        recyclerView.addItemDecoration(new AlarmItemViewDividerDecoration(bottomBarHeight));
 
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -130,8 +129,8 @@ public class CallFragment extends Fragment {
                 Log.i(TAG, "onChildAdded: " + dataSnapshot.getKey());
 
                 AlarmModel value = dataSnapshot.getValue(AlarmModel.class);
-                alarmList.add(value);
-                alarmAdapter.notifyDataSetChanged();
+                callList.add(value);
+                callAdapter.notifyDataSetChanged();
             }
 
             @Override

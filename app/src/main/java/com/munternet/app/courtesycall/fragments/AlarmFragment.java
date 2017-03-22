@@ -34,7 +34,7 @@ import com.munternet.app.courtesycall.IncommingCallService;
 import com.munternet.app.courtesycall.MainActivity;
 import com.munternet.app.courtesycall.R;
 import com.munternet.app.courtesycall.alarm.AlarmAdapter;
-import com.munternet.app.courtesycall.alarm.AlarmItemDividerDecoration;
+import com.munternet.app.courtesycall.views.AlarmItemViewDividerDecoration;
 import com.munternet.app.courtesycall.models.AlarmModel;
 
 import org.joda.time.DateTime;
@@ -141,7 +141,7 @@ public class AlarmFragment extends Fragment {
         recyclerView.setAdapter(alarmAdapter);
 
         int bottomBarHeight = getResources().getDimensionPixelSize(R.dimen.alarm_list_bottom_padding);
-        recyclerView.addItemDecoration(new AlarmItemDividerDecoration(bottomBarHeight));
+        recyclerView.addItemDecoration(new AlarmItemViewDividerDecoration(bottomBarHeight));
 
         prepareAlarmData();
 
