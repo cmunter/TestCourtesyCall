@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/AlertCardViewStyle"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:clickable="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        >
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/callItemAssignCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            />
+
+        <TextView
+            android:id="@+id/callItemLabelText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextLarge.AlarmItemLabel"
+            android:layout_marginTop="8dp"
+            tool:text="Title adasdadada dadada dadadadada dadadad"
+            />
+
+        <TextView
+            android:id="@+id/callItemRelativeTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/callItemLabelText"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_alignParentStart="true"
+            style="@style/TextLarge.AlarmItemRelativeTime"
+            tool:text="in 1 seconds asdasdasdsdsdssdsdsd sdsd"
+            android:layout_toStartOf="@id/callItemAssignCheck"
+
+            />
+
+        <TextView
+            android:id="@+id/callItemTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/callItemRelativeTime"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            style="@style/TextSmall.AlarmItemTime"
+            tool:text="Fri 18:00"
+            />
+
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

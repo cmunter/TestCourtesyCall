@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "745703595022",
+    "firebase_url": "https://friendlychat-cf23d.firebaseio.com",
+    "project_id": "friendlychat-cf23d",
+    "storage_bucket": "friendlychat-cf23d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:745703595022:android:b5d75907de594a2d",
+        "android_client_info": {
+          "package_name": "com.google.firebase.codelab.friendlychat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "745703595022-742gl2pkt33a3d038jhgbc9f66jebrug.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.google.firebase.codelab.friendlychat",
+            "certificate_hash": "32b006c7d6de3a5083e60a1f01303c5ed7e88aad"
+          }
+        },
+        {
+          "client_id": "745703595022-57j1hpnep7jooo2k4p3i2vravljsq8bv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwPpIAyNKItI2qiU1drb-TBCHdFG2fObk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "745703595022-57j1hpnep7jooo2k4p3i2vravljsq8bv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:745703595022:android:885f3c63cdcbcdaf",
+        "android_client_info": {
+          "package_name": "com.munternet.app.courtesycall"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "745703595022-h3mtu9fcfl3k8j4dbd4i0c7noca8jlpo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.munternet.app.courtesycall",
+            "certificate_hash": "32b006c7d6de3a5083e60a1f01303c5ed7e88aad"
+          }
+        },
+        {
+          "client_id": "745703595022-57j1hpnep7jooo2k4p3i2vravljsq8bv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwPpIAyNKItI2qiU1drb-TBCHdFG2fObk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "745703595022-57j1hpnep7jooo2k4p3i2vravljsq8bv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

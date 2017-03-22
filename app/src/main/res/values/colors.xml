@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#37474F</color>-->
+    <!--<color name="colorPrimaryDark">#263238</color>-->
+    <!--<color name="colorAccent">#00E676</color>-->
+
+
+    <!--Brown 300-->
+    <color name="colorPrimary">#A1887F</color>
+
+    <color name="colorPrimaryLessDark">#4E342E</color>
+    <!--Brown 900-->
+    <color name="colorPrimaryDark">#3E2723</color>
+    <color name="colorPrimaryDarker">#39221e</color>
+    <!--Deep Orange A700-->
+    <color name="colorAccent">#DD2C00</color>
+
+    <color name="text">#FFF</color>
+    <color name="textSecondary">@color/colorPrimary</color>
+
+</resources>

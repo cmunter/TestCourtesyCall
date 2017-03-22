@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:layout_width="184dp"
+        android:layout_height="185dp"
+        android:src="@drawable/ic_courtesy_call_24dp"
+        android:tint="@color/colorAccent"
+        />
+
+    <TextView
+        android:id="@+id/helpText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No calls"
+        style="@style/TextLarge"
+        android:layout_margin="24dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/logo"
+        />
+
+    <TextView
+        android:id="@+id/alarmText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" - "
+        style="@style/TextSmall"
+        android:layout_margin="24dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/helpText"
+        />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+
+</RelativeLayout>
