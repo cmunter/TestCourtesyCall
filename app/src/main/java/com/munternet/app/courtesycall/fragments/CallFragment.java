@@ -97,10 +97,6 @@ public class CallFragment extends Fragment {
         //Log.i(TAG, "Value tmepte is: " + tmepte);
     }
 
-    private void databaseListenForSingleEvent() {
-        databaseQuery.addListenerForSingleValueEvent(databaseEventListener);
-    }
-
     private ValueEventListener databaseValueEventListener() {
         return new ValueEventListener() {
             @Override

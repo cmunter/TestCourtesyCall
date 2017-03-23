@@ -41,6 +41,8 @@ import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -51,7 +53,7 @@ import java.util.List;
 public class AlarmFragment extends Fragment {
 
     private static final String TAG = AlarmFragment.class.getSimpleName();
-    private static final boolean DEBUG_LIVE_FRAGMENT_LOG = false;
+    private static final boolean DEBUG_ALARM_FRAGMENT_LOG = true;
 
     private FloatingActionButton fab;
 
@@ -69,7 +71,7 @@ public class AlarmFragment extends Fragment {
     private AlarmAdapter alarmAdapter;
 
     public static AlarmFragment newInstance() {
-        if (DEBUG_LIVE_FRAGMENT_LOG) Log.d(TAG, "::newInstance");
+        if (DEBUG_ALARM_FRAGMENT_LOG) Log.d(TAG, "::newInstance");
         return new AlarmFragment();
     }
 
@@ -133,7 +135,7 @@ public class AlarmFragment extends Fragment {
 
         incommingCallService = new IncommingCallService();
 
-        alarmAdapter = new AlarmAdapter(getActivity(), alarmList);
+        alarmAdapter = new AlarmAdapter(alarmList);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -149,19 +151,37 @@ public class AlarmFragment extends Fragment {
     }
 
     private void prepareAlarmData() {
+        if (DEBUG_ALARM_FRAGMENT_LOG) Log.i(TAG, "::prepareAlarmData");
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        Query databaseQuery = database.getReference("alarms")
+        Query databaseUserQuery = database.getReference("alarms")
                 .orderByChild("userId")
                 .equalTo(MainActivity.userId);
 
-        databaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+        // TODO verify if this is only called when this user has changes and not other users
+        databaseUserQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if (DEBUG_ALARM_FRAGMENT_LOG) Log.i(TAG, "::onDataChange");
+
+                alarmList.clear();
                 for(DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     AlarmModel value = postSnapshot.getValue(AlarmModel.class);
+                    if (DEBUG_ALARM_FRAGMENT_LOG) Log.i(TAG, "::onDataChange " + value.getLabel() + ", " + value.getTimeInMillis());
                     alarmList.add(value);
                 }
 
+                Collections.sort(alarmList, new Comparator<AlarmModel>() {
+                    @Override
+                    public int compare(AlarmModel o1, AlarmModel o2) {
+                        if(o1.getTimeInMillis()>(o2.getTimeInMillis())) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+
+                    }
+                });
                 alarmAdapter.notifyDataSetChanged();
             }
 
@@ -170,11 +190,6 @@ public class AlarmFragment extends Fragment {
 
             }
         });
-
-
-
-
-
     }
 
     private void startCallService() {

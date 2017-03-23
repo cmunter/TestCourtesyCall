@@ -18,17 +18,13 @@ import java.util.List;
 public class AlarmAdapter extends RecyclerView.Adapter<AlarmEntryHolder> {
 
     private List<AlarmModel> alarmList;
-    private Context context;
 
-
-    public AlarmAdapter(Context mContext, List<AlarmModel> mAlarmList) {
-        context = mContext;
+    public AlarmAdapter(List<AlarmModel> mAlarmList) {
         alarmList = mAlarmList;
     }
 
     @Override
     public AlarmEntryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View alarmView = inflater.inflate(R.layout.alarm_list_item, parent, false);
         return new AlarmEntryHolder(alarmView);
@@ -37,9 +33,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmEntryHolder> {
     @Override
     public void onBindViewHolder(AlarmEntryHolder holder, int position) {
         AlarmModel alarm = alarmList.get(position);
-        holder.setLabelText(alarm.getLabel());
-        holder.setRelativeTimeText(alarm.getRelativeTimeString(context));
-        holder.setTimeText(alarm.getTimeString(context));
+        holder.bindHolder(alarm);
     }
 
     @Override

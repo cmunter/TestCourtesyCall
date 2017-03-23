@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import com.munternet.app.courtesycall.EditAlarmActivity;
 import com.munternet.app.courtesycall.R;
+import com.munternet.app.courtesycall.models.AlarmModel;
+
+import static com.munternet.app.courtesycall.EditAlarmActivity.ALARM_ID_EXTRA;
 
 /**
  * Created by chrtistianmunter on 3/16/17.
@@ -25,9 +28,11 @@ public class AlarmEntryHolder extends RecyclerView.ViewHolder {
     private TextView timeText;
     private SwitchCompat alarmActiveSwitch;
 
+    private AlarmModel alarmModel;
+
     public AlarmEntryHolder(View itemView) {
         super(itemView);
-
+        if(DEBUG_VIEWS_LOG) Log.i(TAG, "::AlarmEntryHolder " + getAdapterPosition());
         labelText = (TextView) itemView.findViewById(R.id.alarmItemLabelText);
         relativeTimeText = (TextView) itemView.findViewById(R.id.alarmItemRelativeTime);
         timeText = (TextView) itemView.findViewById(R.id.alarmItemTime);
@@ -37,7 +42,7 @@ public class AlarmEntryHolder extends RecyclerView.ViewHolder {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(DEBUG_VIEWS_LOG) Log.i(TAG, "::AlarmEntryHolder " + getAdapterPosition());
+                if(DEBUG_VIEWS_LOG) Log.i(TAG, "::AlarmEntryHolder alarmActiveSwitch:onCheckedChanged " + getAdapterPosition());
             }
         });
 
@@ -48,23 +53,33 @@ public class AlarmEntryHolder extends RecyclerView.ViewHolder {
                 if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
                     if(DEBUG_VIEWS_LOG) Log.i(TAG, "::AlarmEntryHolder onClick " + position);
                     // TODO: get context or handle this is fragment
-                    labelText.getContext().startActivity(new Intent(labelText.getContext(), EditAlarmActivity.class));
+
+                    Intent intent = new Intent(labelText.getContext(), EditAlarmActivity.class);
+                    intent.putExtra(ALARM_ID_EXTRA, alarmModel.getId());
+
+                    labelText.getContext().startActivity(intent);
                 }
             }
         });
-
-
     }
 
-    public void setLabelText(String label) {
+    public void bindHolder(AlarmModel alarm) {
+        if(DEBUG_VIEWS_LOG) Log.i(TAG, "::AlarmEntryHolder bindHolder " + alarm.getLabel());
+        alarmModel = alarm;
+        setLabelText(alarm.getLabel());
+        setRelativeTimeText(alarm.getRelativeTimeString(labelText.getContext()));
+        setTimeText(alarm.getTimeString(labelText.getContext()));
+    }
+
+    private void setLabelText(String label) {
         labelText.setText(label);
     }
 
-    public void setRelativeTimeText(String date) {
+    private void setRelativeTimeText(String date) {
         relativeTimeText.setText(date);
     }
 
-    public void setTimeText(String date) {
+    private void setTimeText(String date) {
         timeText.setText(date);
     }
 
