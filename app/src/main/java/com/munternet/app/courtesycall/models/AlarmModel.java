@@ -86,9 +86,22 @@ public class AlarmModel {
         return timeChar.toString();
     }
 
+    public String getTimeAndDateString(Context context) {
+        DateTime dateTime = new DateTime(timeInMillis);
+        String result = DateUtils.formatDateTime(context, dateTime, DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_SHOW_DATE |DateUtils.FORMAT_SHOW_TIME);
+        return result;
+    }
+
+
+    public String getDateString(Context context) {
+        DateTime dateTime = new DateTime(timeInMillis);
+        String result = DateUtils.formatDateTime(context, dateTime, DateUtils.FORMAT_SHOW_DATE);
+        return result;
+    }
+
     public String getTimeString(Context context) {
         DateTime dateTime = new DateTime(timeInMillis);
-        String result = DateUtils.formatDateTime(context, dateTime, DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_SHOW_TIME);
+        String result = DateUtils.formatDateTime(context, dateTime, DateUtils.FORMAT_SHOW_TIME);
         return result;
     }
 

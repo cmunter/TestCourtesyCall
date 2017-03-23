@@ -68,7 +68,7 @@ public class AlarmEntryHolder extends RecyclerView.ViewHolder {
         alarmModel = alarm;
         setLabelText(alarm.getLabel());
         setRelativeTimeText(alarm.getRelativeTimeString(labelText.getContext()));
-        setTimeText(alarm.getTimeString(labelText.getContext()));
+        setTimeText(alarm.getTimeAndDateString(labelText.getContext()));
     }
 
     private void setLabelText(String label) {
