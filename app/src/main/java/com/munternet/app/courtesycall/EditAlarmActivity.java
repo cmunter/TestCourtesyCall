@@ -1,12 +1,16 @@
 package com.munternet.app.courtesycall;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,6 +22,8 @@ import com.munternet.app.courtesycall.models.AlarmModel;
 import net.danlew.android.joda.DateUtils;
 
 import org.joda.time.DateTime;
+
+import java.util.Calendar;
 
 public class EditAlarmActivity extends AppCompatActivity {
 
@@ -77,7 +83,6 @@ public class EditAlarmActivity extends AppCompatActivity {
                 if(DEBUG_EDIT_ALARM_ACTIVITY_LOG) Log.i(TAG, "Value is: " + alarmModel.getId());
 
                 populateViews();
-
             }
 
             @Override
@@ -99,6 +104,12 @@ public class EditAlarmActivity extends AppCompatActivity {
 
         String date = alarmModel.getDateString(this);
         alarmDateButton.setText(date);
+        alarmDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog();
+            }
+        });
 
         String time = alarmModel.getTimeString(this);
         alarmTimeButton.setText(time);
@@ -113,12 +124,42 @@ public class EditAlarmActivity extends AppCompatActivity {
     private void showTimePickerDialog() {
         boolean is24hClock = true;
 
-        DateTime dateTime = new DateTime(alarmModel.getTimeInMillis());
-        //String result = DateUtils.formatDateTime(context, dateTime, DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_SHOW_DATE |DateUtils.FORMAT_SHOW_TIME);
+        final DateTime dateTime = new DateTime(alarmModel.getTimeInMillis());
 
-        int mMinute = dateTime.getMinuteOfHour();
-        int mHour = dateTime.getHourOfDay();
-        final TimePickerDialog timePickerDialog = new TimePickerDialog(this, null, mHour, mMinute, is24hClock);
+        final int mMinute = dateTime.getMinuteOfHour();
+        final int mHour = dateTime.getHourOfDay();
+        TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                DateTime newDateTime = dateTime.plusHours(selectedHour-mHour).plusMinutes(selectedMinute-mMinute);
+                alarmModel.setTimeInMillis(newDateTime.getMillis());
+                String time = alarmModel.getTimeString(EditAlarmActivity.this);
+                alarmTimeButton.setText(time);
+            }
+        };
+
+        final TimePickerDialog timePickerDialog = new TimePickerDialog(this, timeSetListener, mHour, mMinute, is24hClock);
         timePickerDialog.show();
     }
+
+    private void showDatePickerDialog() {
+
+        final DateTime dateTime = new DateTime(alarmModel.getTimeInMillis());
+        final int mYear = dateTime.getYear();
+        final int mMonth = dateTime.getMonthOfYear();
+        final int mDay = dateTime.getDayOfMonth();
+
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                DateTime newDateTime = dateTime.plusYears(year-mYear).plusMonths(month-mMonth).plusDays(mDay-dayOfMonth);
+                alarmModel.setTimeInMillis(newDateTime.getMillis());
+                String date = alarmModel.getDateString(EditAlarmActivity.this);
+                alarmDateButton.setText(date);
+            }
+        };
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this, dateSetListener, mYear, mMonth, mDay);
+        datePickerDialog.show();
+    }
+
 }
