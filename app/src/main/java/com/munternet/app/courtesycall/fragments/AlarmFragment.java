@@ -30,6 +30,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.munternet.app.courtesycall.CallReceiver;
 import com.munternet.app.courtesycall.CallService;
+import com.munternet.app.courtesycall.EditAlarmActivity;
 import com.munternet.app.courtesycall.IncommingCallService;
 import com.munternet.app.courtesycall.MainActivity;
 import com.munternet.app.courtesycall.R;
@@ -45,6 +46,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.List;
+
+import static com.munternet.app.courtesycall.EditAlarmActivity.ALARM_ID_EXTRA;
 
 /**
  * Created by chrtistianmunter on 3/16/17.
@@ -84,19 +87,23 @@ public class AlarmFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Intent intent = new Intent(getActivity(), EditAlarmActivity.class);
+                startActivity(intent);
+
                 // showMissedAlarmNotification();
                 // startCallService();
                 //setTestAlarm1MinFromNow();
 
 
 
-                DateTime now = DateTime.now();
-
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("alarms");
-                String key = myRef.push().getKey();
-                AlarmModel alarm1 = new AlarmModel(key, "Go to swimming 2", now.plusMinutes(6).getMillis(), MainActivity.userId);
-                myRef.child(key).setValue(alarm1);
+//                DateTime now = DateTime.now();
+//
+//                FirebaseDatabase database = FirebaseDatabase.getInstance();
+//                DatabaseReference myRef = database.getReference("alarms");
+//                String key = myRef.push().getKey();
+//                AlarmModel alarm1 = new AlarmModel(key, "Go to swimming 2", now.plusMinutes(6).getMillis(), MainActivity.userId);
+//                myRef.child(key).setValue(alarm1);
 
                 //alarmList.add(alarm1);
 

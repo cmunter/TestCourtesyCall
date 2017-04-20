@@ -52,7 +52,11 @@
             android:name=".CallReceiver"
             android:process=":remote" />
 
-        <activity android:name=".EditAlarmActivity"></activity>
+        <activity
+            android:name=".EditAlarmActivity"
+            android:parentActivityName=".MainActivity"
+            >
+        </activity>
     </application>
 
 </manifest>

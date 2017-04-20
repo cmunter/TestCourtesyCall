@@ -2,10 +2,12 @@ package com.munternet.app.courtesycall;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -41,24 +43,27 @@ public class EditAlarmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_alarm);
         initViews();
 
-
-        String alarmId = getIntent().getExtras().getString(ALARM_ID_EXTRA,"");
+        String alarmId = null;
+        if(getIntent()!=null && getIntent().getExtras()!=null) {
+            alarmId = getIntent().getExtras().getString(ALARM_ID_EXTRA,"");
+        }
 
         // NOTE: savedInstanceState is null the first time the activity is started, at orientation change it's !null
 
         if(DEBUG_EDIT_ALARM_ACTIVITY_LOG) Log.i(TAG, "::onCreate " + alarmId + ", " + savedInstanceState);
-        if(!alarmId.isEmpty()) {
+        if(alarmId!=null && !alarmId.isEmpty()) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             databaseUserQuery = database.getReference("alarms").child(alarmId);
             databaseUserQuery.addListenerForSingleValueEvent(databaseValueEventListener());
         } else {
             DateTime now = DateTime.now();
-
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("alarms");
-            String key = myRef.push().getKey();
-            AlarmModel alarm1 = new AlarmModel(key, "Go to swimming 2", now.getMillis(), MainActivity.userId);
-            myRef.child(key).setValue(alarm1);
+            DatabaseReference databaseRef = database.getReference("alarms");
+            String key = databaseRef.push().getKey();
+            AlarmModel alarm = new AlarmModel(key, "", now.getMillis(), MainActivity.userId);
+            databaseRef.child(key).setValue(alarm);
+
+            showKeyboard();
         }
     }
 
@@ -101,6 +106,7 @@ public class EditAlarmActivity extends AppCompatActivity {
 
     private void populateViews() {
         alarmLabelText.setText(alarmModel.getLabel());
+        alarmLabelText.setSelection(alarmLabelText.length());
 
         String date = alarmModel.getDateString(this);
         alarmDateButton.setText(date);
@@ -152,14 +158,27 @@ public class EditAlarmActivity extends AppCompatActivity {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                DateTime newDateTime = dateTime.plusYears(year-mYear).plusMonths(month-mMonth).plusDays(dayOfMonth-mDay);
+
+                Log.i(TAG, "onDateSet DATE current month: " + mMonth + ", selected: " + month);
+
+                DateTime newDateTime = dateTime.plusYears(year-mYear).plusMonths((month+1)-mMonth).plusDays(dayOfMonth-mDay);
                 alarmModel.setTimeInMillis(newDateTime.getMillis());
                 String date = alarmModel.getDateString(EditAlarmActivity.this);
                 alarmDateButton.setText(date);
             }
         };
-        final DatePickerDialog datePickerDialog = new DatePickerDialog(this, dateSetListener, mYear, mMonth, mDay);
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this, dateSetListener, mYear, mMonth-1, mDay);
         datePickerDialog.show();
     }
 
+    private void showKeyboard() {
+        // NOTE: It needs to be delayed because this can be called from onCreate()
+        (new Handler()).postDelayed(new Runnable() {
+            public void run() {
+                alarmLabelText.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                imm.showSoftInput(alarmLabelText, InputMethodManager.SHOW_IMPLICIT);
+            }
+        }, 200);
+    }
 }
