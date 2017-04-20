@@ -4,4 +4,5 @@
     <string name="tab_title_alarm">alarms</string>
     <string name="tab_title_call">call</string>
     <string name="tab_title_profile">profile</string>
+    <string name="edit_alarm_delete_menu">Delete</string>
 </resources>

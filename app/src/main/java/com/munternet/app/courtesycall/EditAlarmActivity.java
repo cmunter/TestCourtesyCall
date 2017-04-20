@@ -6,6 +6,9 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -37,13 +40,15 @@ public class EditAlarmActivity extends AppCompatActivity {
     private Button alarmTimeButton;
     private Button alarmDateButton;
 
+    private String alarmId = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_alarm);
         initViews();
 
-        String alarmId = null;
+
         if(getIntent()!=null && getIntent().getExtras()!=null) {
             alarmId = getIntent().getExtras().getString(ALARM_ID_EXTRA,"");
         }
@@ -51,7 +56,7 @@ public class EditAlarmActivity extends AppCompatActivity {
         // NOTE: savedInstanceState is null the first time the activity is started, at orientation change it's !null
 
         if(DEBUG_EDIT_ALARM_ACTIVITY_LOG) Log.i(TAG, "::onCreate " + alarmId + ", " + savedInstanceState);
-        if(alarmId!=null && !alarmId.isEmpty()) {
+        if(!alarmId.isEmpty()) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             databaseUserQuery = database.getReference("alarms").child(alarmId);
             databaseUserQuery.addListenerForSingleValueEvent(databaseValueEventListener());
@@ -60,8 +65,9 @@ public class EditAlarmActivity extends AppCompatActivity {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference databaseRef = database.getReference("alarms");
             String key = databaseRef.push().getKey();
-            AlarmModel alarm = new AlarmModel(key, "", now.getMillis(), MainActivity.userId);
-            databaseRef.child(key).setValue(alarm);
+            alarmModel = new AlarmModel(key, "", now.getMillis(), MainActivity.userId);
+            databaseUserQuery = databaseRef.child(key);
+            databaseUserQuery.setValue(alarmModel);
 
             showKeyboard();
         }
@@ -77,7 +83,29 @@ public class EditAlarmActivity extends AppCompatActivity {
             databaseUserQuery.setValue(alarmModel);
         }
 
+        // TODO: maybe move save to onDestroy(/)
+        // TODO: handle that new alarm will created when the user just opens and then closes the activity. maybe check that editText.isEmpty and then delete from firebase
+
         super.onPause();
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(!alarmId.isEmpty()) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.edit_alarm_menu, menu);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.deleteAlarm:
+                databaseUserQuery.removeValue();
+                finish();
+                return true;
+        }
+        return false;
     }
 
     private ValueEventListener databaseValueEventListener() {
