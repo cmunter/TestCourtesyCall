@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.munternet.app.courtesycall.models.AlarmModel;
+import com.munternet.app.courtesycall.utils.PreferenceUtil;
 
 import org.joda.time.DateTime;
 
@@ -42,12 +43,13 @@ public class EditAlarmActivity extends AppCompatActivity {
 
     private String alarmId = "";
 
+    private boolean isDeletingAlarm = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_alarm);
         initViews();
-
 
         if(getIntent()!=null && getIntent().getExtras()!=null) {
             alarmId = getIntent().getExtras().getString(ALARM_ID_EXTRA,"");
@@ -65,12 +67,22 @@ public class EditAlarmActivity extends AppCompatActivity {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference databaseRef = database.getReference("alarms");
             String key = databaseRef.push().getKey();
-            alarmModel = new AlarmModel(key, "", now.getMillis(), MainActivity.userId);
+            int userId = PreferenceUtil.readAccountPreferences(EditAlarmActivity.this);
+            alarmModel = new AlarmModel(key, "", now.getMillis(), String.valueOf(userId));
             databaseUserQuery = databaseRef.child(key);
             databaseUserQuery.setValue(alarmModel);
 
+            populateViews();
+
             showKeyboard();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        isDeletingAlarm = false;
     }
 
     @Override
@@ -78,7 +90,7 @@ public class EditAlarmActivity extends AppCompatActivity {
         if(DEBUG_EDIT_ALARM_ACTIVITY_LOG) Log.i(TAG, "::onPause");
 
         String alarmLabel = alarmLabelText.getText().toString();
-        if(!alarmLabel.isEmpty()) {
+        if(!isDeletingAlarm &&!alarmLabel.isEmpty()) {
             alarmModel.setLabel(alarmLabel);
             databaseUserQuery.setValue(alarmModel);
         }
@@ -102,6 +114,7 @@ public class EditAlarmActivity extends AppCompatActivity {
         switch(item.getItemId()) {
             case R.id.deleteAlarm:
                 databaseUserQuery.removeValue();
+                isDeletingAlarm = true;
                 finish();
                 return true;
         }

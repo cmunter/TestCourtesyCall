@@ -43,6 +43,7 @@ public class CallFragment extends Fragment {
     private List<AlarmModel> callList = new ArrayList<>();
     private RecyclerView recyclerView;
     private CallAdapter callAdapter;
+    private View emptyView;
 
     // private DatabaseReference databaseReference;
     private Query databaseQuery;
@@ -70,6 +71,7 @@ public class CallFragment extends Fragment {
         int bottomBarHeight = getResources().getDimensionPixelSize(R.dimen.alarm_list_bottom_padding);
         recyclerView.addItemDecoration(new AlarmItemViewDividerDecoration(bottomBarHeight));
 
+        emptyView = rootView.findViewById(R.id.callEmptyView);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -77,7 +79,7 @@ public class CallFragment extends Fragment {
         databaseQuery = database.getReference("alarms")
                 .orderByChild("timeInMillis")
                 .startAt(DateTime.now().getMillis())    // limit to alarms after this time TODO: is there a problem with time zones?
-                .limitToFirst(3);
+                .limitToFirst(30);
 
         databaseEventListener = databaseValueEventListener();
         childEventListener = childEventListener();
@@ -87,14 +89,9 @@ public class CallFragment extends Fragment {
         return rootView;
     }
 
-
     private void databaseListenForChanges() {
 //        databaseQuery.addValueEventListener(databaseEventListener);
         databaseQuery.addChildEventListener(childEventListener);
-
-
-        //child("101").push().getKey();
-        //Log.i(TAG, "Value tmepte is: " + tmepte);
     }
 
     private ValueEventListener databaseValueEventListener() {
@@ -127,6 +124,8 @@ public class CallFragment extends Fragment {
                 AlarmModel value = dataSnapshot.getValue(AlarmModel.class);
                 callList.add(value);
                 callAdapter.notifyDataSetChanged();
+
+                hideEmptyView();
             }
 
             @Override
@@ -149,6 +148,10 @@ public class CallFragment extends Fragment {
                 Log.i(TAG, "onCancelled: " + databaseError.getMessage());
             }
         };
+    }
+
+    private void hideEmptyView() {
+        emptyView.setVisibility(View.GONE);
     }
 
     /**

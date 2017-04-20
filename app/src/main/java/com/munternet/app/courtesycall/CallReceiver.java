@@ -17,8 +17,8 @@ public class CallReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.i(TAG, "CallReceiver.onReceive()");
 
-        Intent incomingCallIntent = new Intent(context, IncomingCallActivity.class);
-        incomingCallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        context.startActivity(incomingCallIntent);
+//        Intent incomingCallIntent = new Intent(context, IncomingCallActivity.class);
+//        incomingCallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        context.startActivity(incomingCallIntent);
     }
 }

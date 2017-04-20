@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -35,6 +34,7 @@ import com.munternet.app.courtesycall.IncommingCallService;
 import com.munternet.app.courtesycall.MainActivity;
 import com.munternet.app.courtesycall.R;
 import com.munternet.app.courtesycall.alarm.AlarmAdapter;
+import com.munternet.app.courtesycall.utils.PreferenceUtil;
 import com.munternet.app.courtesycall.views.AlarmItemViewDividerDecoration;
 import com.munternet.app.courtesycall.models.AlarmModel;
 
@@ -62,13 +62,6 @@ public class AlarmFragment extends Fragment {
 
     private IncommingCallService incommingCallService;
 
-    private GregorianCalendar mCalendar;
-    private int mYear;
-    private int mMonth;
-    private int mDay;
-    private int mHour;
-    private int mMinute;
-
     private List<AlarmModel> alarmList = new ArrayList<>();
     private RecyclerView recyclerView;
     private AlarmAdapter alarmAdapter;
@@ -94,53 +87,10 @@ public class AlarmFragment extends Fragment {
                 // showMissedAlarmNotification();
                 // startCallService();
                 //setTestAlarm1MinFromNow();
-
-
-
-//                DateTime now = DateTime.now();
-//
-//                FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                DatabaseReference myRef = database.getReference("alarms");
-//                String key = myRef.push().getKey();
-//                AlarmModel alarm1 = new AlarmModel(key, "Go to swimming 2", now.plusMinutes(6).getMillis(), MainActivity.userId);
-//                myRef.child(key).setValue(alarm1);
-
-                //alarmList.add(alarm1);
-
-
-
-//                AlarmModel alarm2 = new AlarmModel("Wake up", now.plusMinutes(-8).getMillis());
-//                alarmList.add(alarm2);
-//
-//                AlarmModel alarm3 = new AlarmModel("Start homework", now.plusDays(1).getMillis());
-//                alarmList.add(alarm3);
-//
-//                AlarmModel alarm4 = new AlarmModel("Visit grandmother", now.plusDays(3).getMillis());
-//                alarmList.add(alarm4);
-//
-//                AlarmModel alarm5 = new AlarmModel("Go to swimming", now.plusHours(1).plusDays(5).getMillis());
-//                alarmList.add(alarm5);
-
-
-//                int index = 104;
-//                myRef.child(String.valueOf(index)).setValue(alarm1);
-
-
-//                for(AlarmModel alarm : alarmList) {
-//                    index += 1;
-//                    myRef.child(String.valueOf(index)).setValue(alarm);
-//
-//                }
-
-
-
             }
         });
 
-        setupDateAndTimeDialogs(rootView);
-
-
-        incommingCallService = new IncommingCallService();
+        // incommingCallService = new IncommingCallService();
 
         alarmAdapter = new AlarmAdapter(alarmList);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
@@ -161,9 +111,10 @@ public class AlarmFragment extends Fragment {
         if (DEBUG_ALARM_FRAGMENT_LOG) Log.i(TAG, "::prepareAlarmData");
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+        int userId = PreferenceUtil.readAccountPreferences(getActivity());
         Query databaseUserQuery = database.getReference("alarms")
                 .orderByChild("userId")
-                .equalTo(MainActivity.userId);
+                .equalTo(String.valueOf(userId));
 
         // TODO verify if this is only called when this user has changes and not other users
         databaseUserQuery.addValueEventListener(new ValueEventListener() {
@@ -251,42 +202,6 @@ public class AlarmFragment extends Fragment {
         Log.i("MUNTER", "::setTestAlarm1MinFromNow()");
 
         Snackbar.make(fab, "Test call 2 mins from now", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-    }
-
-    private void setupDateAndTimeDialogs(View rootView) {
-        mCalendar = new GregorianCalendar();
-        mCalendar.setTimeInMillis(System.currentTimeMillis());
-        mYear = mCalendar.get(Calendar.YEAR);
-        mMonth = mCalendar.get(Calendar.MONTH);
-        mDay = mCalendar.get(Calendar.DAY_OF_MONTH);
-        mHour = mCalendar.get(Calendar.HOUR_OF_DAY);
-        mMinute = mCalendar.get(Calendar.MINUTE);
-
-        final DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), null, mYear, mMonth, mDay);
-
-        boolean is24hClock = true;
-        final TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), null, mHour, mMinute, is24hClock);
-
-
-        View item1 = rootView.findViewById(R.id.item1);
-        item1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //startActivity(new Intent(getActivity(), SetupCallActivity.class));
-
-
-                //datePickerDialog.show();
-            }
-        });
-
-        View item2 = rootView.findViewById(R.id.item2);
-        item2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                timePickerDialog.show();
-            }
-        });
-
     }
 
 }
