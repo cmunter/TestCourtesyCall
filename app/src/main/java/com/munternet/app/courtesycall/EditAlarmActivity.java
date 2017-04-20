@@ -2,7 +2,6 @@ package com.munternet.app.courtesycall;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,11 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.munternet.app.courtesycall.models.AlarmModel;
 
-import net.danlew.android.joda.DateUtils;
-
 import org.joda.time.DateTime;
-
-import java.util.Calendar;
 
 public class EditAlarmActivity extends AppCompatActivity {
 
@@ -56,9 +51,14 @@ public class EditAlarmActivity extends AppCompatActivity {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             databaseUserQuery = database.getReference("alarms").child(alarmId);
             databaseUserQuery.addListenerForSingleValueEvent(databaseValueEventListener());
+        } else {
+            DateTime now = DateTime.now();
 
-
-
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("alarms");
+            String key = myRef.push().getKey();
+            AlarmModel alarm1 = new AlarmModel(key, "Go to swimming 2", now.getMillis(), MainActivity.userId);
+            myRef.child(key).setValue(alarm1);
         }
     }
 
@@ -152,7 +152,7 @@ public class EditAlarmActivity extends AppCompatActivity {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                DateTime newDateTime = dateTime.plusYears(year-mYear).plusMonths(month-mMonth).plusDays(mDay-dayOfMonth);
+                DateTime newDateTime = dateTime.plusYears(year-mYear).plusMonths(month-mMonth).plusDays(dayOfMonth-mDay);
                 alarmModel.setTimeInMillis(newDateTime.getMillis());
                 String date = alarmModel.getDateString(EditAlarmActivity.this);
                 alarmDateButton.setText(date);
