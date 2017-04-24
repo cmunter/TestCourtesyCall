@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="16dp"
     >
 
     <EditText
@@ -11,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Your name"
+        android:imeOptions="actionNext"
         />
 
     <EditText
@@ -19,6 +21,7 @@
         android:layout_height="wrap_content"
         android:hint="User ID"
         android:inputType="numberDecimal"
+        android:imeOptions="actionDone"
         />
 
 </LinearLayout>

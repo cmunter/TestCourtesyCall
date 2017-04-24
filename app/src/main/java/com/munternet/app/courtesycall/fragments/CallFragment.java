@@ -39,7 +39,6 @@ public class CallFragment extends Fragment {
     private static final String TAG = CallFragment.class.getSimpleName();
     private static final boolean DEBUG_LIVE_FRAGMENT_LOG = false;
 
-    private TextView alarmText;
     private List<AlarmModel> callList = new ArrayList<>();
     private RecyclerView recyclerView;
     private CallAdapter callAdapter;
@@ -59,7 +58,6 @@ public class CallFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_call, container, false);
-        alarmText = (TextView) rootView.findViewById(R.id.alarmText);
 
         callAdapter = new CallAdapter(getActivity(), callList);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
@@ -100,10 +98,6 @@ public class CallFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                AlarmModel value = dataSnapshot.child("101").getValue(AlarmModel.class);
-                alarmText.setText("Data: " + value.getLabel());
-                Log.i(TAG, "Value is: " + value);
-
 
             }
 

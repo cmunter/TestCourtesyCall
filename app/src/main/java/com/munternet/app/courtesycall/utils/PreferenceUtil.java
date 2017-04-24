@@ -1,6 +1,7 @@
 package com.munternet.app.courtesycall.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
@@ -10,22 +11,26 @@ import android.content.SharedPreferences;
 public class PreferenceUtil {
 
     private static final String COURTESY_CALL_PREFERENCES = "CourtesyCallPreferences";
+    private static final String USER_NAME = "userName";
+    private static final String USER_ID = "userId";
 
-    public static void saveAccountPreferences(Activity activity, String name, int id ) {
-        SharedPreferences.Editor editor = activity.getSharedPreferences(COURTESY_CALL_PREFERENCES, Activity.MODE_PRIVATE).edit();
-        editor.putString("name", name);
-        editor.putInt("idName", id);
+
+    public static void saveAccountPreferences(Context context, String name, int id ) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(COURTESY_CALL_PREFERENCES, Activity.MODE_PRIVATE).edit();
+        editor.putString(USER_NAME, name);
+        editor.putInt(USER_ID, id);
         editor.apply();
     }
 
-    public static int readAccountPreferences(Activity activity) {
-        SharedPreferences prefs = activity.getSharedPreferences(COURTESY_CALL_PREFERENCES, Activity.MODE_PRIVATE);
-//        String restoredText = prefs.getString("text", null);
-//        if (restoredText != null) {
-        String name = prefs.getString("name", "");
-        int idName = prefs.getInt("idName", -1);
+    public static int readUserIdPreferences(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(COURTESY_CALL_PREFERENCES, Activity.MODE_PRIVATE);
+        int idName = prefs.getInt(USER_ID, 0);
         return idName;
-//        }
-//        return -1;
+    }
+
+    public static String readUserNamePreferences(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(COURTESY_CALL_PREFERENCES, Activity.MODE_PRIVATE);
+        String name = prefs.getString(USER_NAME, "");
+        return name;
     }
 }

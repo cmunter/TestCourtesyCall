@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.munternet.app.courtesycall.MainActivity;
 import com.munternet.app.courtesycall.R;
@@ -24,60 +25,51 @@ import com.munternet.app.courtesycall.utils.PreferenceUtil;
 public class ProfileFragment extends Fragment {
 
     private static final String TAG = ProfileFragment.class.getSimpleName();
-    private static final boolean DEBUG_LIVE_FRAGMENT_LOG = false;
+    private static final boolean DEBUG_LIVE_FRAGMENT_LOG = true;
+
+    private TextView userNameView;
+    private TextView userIdView;
 
     public static ProfileFragment newInstance() {
-        if (DEBUG_LIVE_FRAGMENT_LOG) Log.d(TAG, "::newInstance");
+        if (DEBUG_LIVE_FRAGMENT_LOG) Log.i(TAG, "::newInstance");
         return new ProfileFragment();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        int userId = PreferenceUtil.readAccountPreferences(getActivity());
-        if(userId==-1) {
-            showWelcomeDialog();
-        }
-        super.onAttach(context);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (DEBUG_LIVE_FRAGMENT_LOG) Log.i(TAG, "::onCreateView");
+
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        userNameView = (TextView) rootView.findViewById(R.id.userName);
+        userIdView = (TextView) rootView.findViewById(R.id.userId);
+        setProfileViews();
+
         Button editProfileButton = (Button) rootView.findViewById(R.id.editProfileButton);
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showWelcomeDialog();
+                ((MainActivity)getActivity()).showWelcomeDialog(getActivity()).setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        if (DEBUG_LIVE_FRAGMENT_LOG) Log.i(TAG, "::OnDismissListener");
+                        setProfileViews();
+                    }
+                });
             }
         });
         return rootView;
     }
 
-    private void showWelcomeDialog() {
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View dialogview = inflater.inflate(R.layout.dialog_welcome, null);
-        final EditText userName = (EditText) dialogview.findViewById(R.id.welcomeUserName);
-        final EditText userId = (EditText) dialogview.findViewById(R.id.welcomeUserId);
+    private void setProfileViews() {
 
-        AlertDialog.Builder dialogbuilder = new AlertDialog.Builder(getActivity());
-        dialogbuilder.setTitle("Welcome");
-        dialogbuilder.setView(dialogview);
-        dialogbuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                int id = -1;
-                try {
-                    id = Integer.parseInt(userId.getText().toString());
-                } catch (NumberFormatException e) {
-                    // Ignore for now
-                }
+        String userName = PreferenceUtil.readUserNamePreferences(getActivity());
+        int userId = PreferenceUtil.readUserIdPreferences(getActivity());
 
-                PreferenceUtil.saveAccountPreferences(getActivity(), userName.getText().toString(), id);
-            }
-        });
-        AlertDialog dialog = dialogbuilder.create();
-        dialog.show();
+        userNameView.setText(userName);
+        if(userId>0) userIdView.setText(String.valueOf(userId));
     }
+
 
 }

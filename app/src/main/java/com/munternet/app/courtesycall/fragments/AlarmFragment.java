@@ -1,10 +1,8 @@
 package com.munternet.app.courtesycall.fragments;
 
 import android.app.AlarmManager;
-import android.app.DatePickerDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,16 +36,10 @@ import com.munternet.app.courtesycall.utils.PreferenceUtil;
 import com.munternet.app.courtesycall.views.AlarmItemViewDividerDecoration;
 import com.munternet.app.courtesycall.models.AlarmModel;
 
-import org.joda.time.DateTime;
-
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.GregorianCalendar;
 import java.util.List;
-
-import static com.munternet.app.courtesycall.EditAlarmActivity.ALARM_ID_EXTRA;
 
 /**
  * Created by chrtistianmunter on 3/16/17.
@@ -111,7 +103,7 @@ public class AlarmFragment extends Fragment {
         if (DEBUG_ALARM_FRAGMENT_LOG) Log.i(TAG, "::prepareAlarmData");
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        int userId = PreferenceUtil.readAccountPreferences(getActivity());
+        int userId = PreferenceUtil.readUserIdPreferences(getActivity());
         Query databaseUserQuery = database.getReference("alarms")
                 .orderByChild("userId")
                 .equalTo(String.valueOf(userId));

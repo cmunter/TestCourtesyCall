@@ -17,7 +17,7 @@
         />
 
     <TextView
-        android:id="@+id/helpText"
+        android:id="@+id/userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mike"
@@ -28,14 +28,14 @@
         />
 
     <TextView
-        android:id="@+id/helpText2"
+        android:id="@+id/userId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Great guy"
         style="@style/TextLarge"
         android:layout_margin="8dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/helpText"
+        android:layout_below="@+id/userName"
         />
 
     <Button
@@ -46,7 +46,7 @@
         android:padding="8dp"
         android:layout_margin="8dp"
         android:text="edit"
-        android:layout_below="@+id/helpText2"
+        android:layout_below="@+id/userId"
         />
 
 </RelativeLayout>

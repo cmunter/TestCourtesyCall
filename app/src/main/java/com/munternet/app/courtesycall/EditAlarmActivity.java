@@ -67,7 +67,7 @@ public class EditAlarmActivity extends AppCompatActivity {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference databaseRef = database.getReference("alarms");
             String key = databaseRef.push().getKey();
-            int userId = PreferenceUtil.readAccountPreferences(EditAlarmActivity.this);
+            int userId = PreferenceUtil.readUserIdPreferences(EditAlarmActivity.this);
             alarmModel = new AlarmModel(key, "", now.getMillis(), String.valueOf(userId));
             databaseUserQuery = databaseRef.child(key);
             databaseUserQuery.setValue(alarmModel);

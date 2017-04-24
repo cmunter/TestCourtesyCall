@@ -1,8 +1,8 @@
 package com.munternet.app.courtesycall;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -43,8 +43,48 @@ public class MainActivity extends AppCompatActivity {
 
         // checkCanDrawOverlay();
 
-
+        int userId = PreferenceUtil.readUserIdPreferences(MainActivity.this);
+        if(userId==0) {
+            showWelcomeDialog(MainActivity.this);
+        }
     }
+
+
+    public static AlertDialog showWelcomeDialog(final Context context) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.dialog_welcome, null);
+        final EditText userNameView = (EditText) dialogView.findViewById(R.id.welcomeUserName);
+        final EditText userIdView = (EditText) dialogView.findViewById(R.id.welcomeUserId);
+
+        String userName = PreferenceUtil.readUserNamePreferences(context);
+        int userId = PreferenceUtil.readUserIdPreferences(context);
+
+        userNameView.setText(userName);
+        if(userId>0) userIdView.setText(String.valueOf(userId));
+
+        AlertDialog.Builder dialogbuilder = new AlertDialog.Builder(context);
+        dialogbuilder.setTitle("Welcome");
+        dialogbuilder.setView(dialogView);
+        dialogbuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int id = 0;
+                try {
+                    id = Integer.parseInt(userIdView.getText().toString());
+                } catch (NumberFormatException e) {
+                    // Ignore for now
+                }
+
+                PreferenceUtil.saveAccountPreferences(context, userNameView.getText().toString(), id);
+            }
+        });
+        AlertDialog dialog = dialogbuilder.create();
+        dialog.show();
+
+        return dialog;
+    }
+
+
 
     private void setupTabs() {
         if (DEBUG_TAB_ACTIVITY_LOG) Log.d(TAG, "::setupTabs");
