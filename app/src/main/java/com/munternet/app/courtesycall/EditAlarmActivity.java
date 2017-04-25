@@ -70,7 +70,6 @@ public class EditAlarmActivity extends AppCompatActivity {
             int userId = PreferenceUtil.readUserIdPreferences(EditAlarmActivity.this);
             alarmModel = new AlarmModel(key, "", now.getMillis(), String.valueOf(userId));
             databaseUserQuery = databaseRef.child(key);
-            databaseUserQuery.setValue(alarmModel);
 
             populateViews();
 
@@ -94,10 +93,6 @@ public class EditAlarmActivity extends AppCompatActivity {
             alarmModel.setLabel(alarmLabel);
             databaseUserQuery.setValue(alarmModel);
         }
-
-        // TODO: maybe move save to onDestroy(/)
-        // TODO: handle that new alarm will created when the user just opens and then closes the activity. maybe check that editText.isEmpty and then delete from firebase
-
         super.onPause();
     }
 
