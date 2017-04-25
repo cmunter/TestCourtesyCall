@@ -7,42 +7,37 @@
     >
 
     <LinearLayout
+        android:id="@+id/alertEmptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:gravity="center"
+        android:alpha="0.3"
         >
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@drawable/ic_bell_outline_24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            />
 
         <TextView
             android:id="@+id/helpText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Test UI.
-        \nPress a list item to show either Date or Time picker dialog
-        \nPress the button to create a call 2 mins from now"
-            style="@style/Base.TextAppearance.AppCompat.Body2"
-            android:layout_margin="24dp"
-            android:visibility="gone"
+            android:text="You have no alarms \nAdd an alarm"
+            style="@style/TextLarge"
+            android:layout_margin="8dp"
+            android:gravity="center_horizontal"
             />
 
-        <include
-            android:id="@+id/item1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            layout="@layout/alarm_list_item"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            />
-
-        <include
-            android:id="@+id/item2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            layout="@layout/alarm_list_item"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_arrow_downward_16dp"
             />
 
     </LinearLayout>
@@ -52,7 +47,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
-
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

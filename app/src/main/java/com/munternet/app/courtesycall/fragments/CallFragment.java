@@ -22,6 +22,7 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.munternet.app.courtesycall.R;
 import com.munternet.app.courtesycall.call.CallAdapter;
+import com.munternet.app.courtesycall.utils.PreferenceUtil;
 import com.munternet.app.courtesycall.views.AlarmItemViewDividerDecoration;
 import com.munternet.app.courtesycall.models.AlarmModel;
 
@@ -49,6 +50,8 @@ public class CallFragment extends Fragment {
     private ValueEventListener databaseEventListener;
     private ChildEventListener childEventListener;
 
+    private int userId = -1;
+
     public static CallFragment newInstance() {
         if (DEBUG_LIVE_FRAGMENT_LOG) Log.d(TAG, "::newInstance");
         return new CallFragment();
@@ -70,6 +73,8 @@ public class CallFragment extends Fragment {
         recyclerView.addItemDecoration(new AlarmItemViewDividerDecoration(bottomBarHeight));
 
         emptyView = rootView.findViewById(R.id.callEmptyView);
+
+        userId = PreferenceUtil.readUserIdPreferences(getActivity());
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -116,10 +121,18 @@ public class CallFragment extends Fragment {
                 Log.i(TAG, "onChildAdded: " + dataSnapshot.getKey());
 
                 AlarmModel value = dataSnapshot.getValue(AlarmModel.class);
-                callList.add(value);
-                callAdapter.notifyDataSetChanged();
+                int alarmUserId = -1;
+                try {
+                    alarmUserId = Integer.parseInt(value.getUserId());
+                } catch (NumberFormatException e) {
+                    // Ignore for now
+                }
 
-                hideEmptyView();
+                if(alarmUserId!=userId) {
+                    callList.add(value);
+                    callAdapter.notifyDataSetChanged();
+                    hideEmptyView();
+                }
             }
 
             @Override

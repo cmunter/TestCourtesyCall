@@ -58,6 +58,8 @@ public class AlarmFragment extends Fragment {
     private RecyclerView recyclerView;
     private AlarmAdapter alarmAdapter;
 
+    private View emptyView;
+
     public static AlarmFragment newInstance() {
         if (DEBUG_ALARM_FRAGMENT_LOG) Log.d(TAG, "::newInstance");
         return new AlarmFragment();
@@ -67,6 +69,7 @@ public class AlarmFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_alert, container, false);
+        emptyView = rootView.findViewById(R.id.alertEmptyView);
 
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +136,10 @@ public class AlarmFragment extends Fragment {
                     }
                 });
                 alarmAdapter.notifyDataSetChanged();
+
+                if(!alarmList.isEmpty()) {
+                    hideEmptyView();
+                }
             }
 
             @Override
@@ -194,6 +201,10 @@ public class AlarmFragment extends Fragment {
         Log.i("MUNTER", "::setTestAlarm1MinFromNow()");
 
         Snackbar.make(fab, "Test call 2 mins from now", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    }
+
+    private void hideEmptyView() {
+        emptyView.setVisibility(View.GONE);
     }
 
 }
