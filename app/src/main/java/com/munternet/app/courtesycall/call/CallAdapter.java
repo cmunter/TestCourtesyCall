@@ -20,11 +20,8 @@ public class CallAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int HEADER_VIEW_TYPE = 0;
     private static final int CONTENT_VIEW_TYPE = 1;
     private List<AlarmModel> alarmList;
-    private Context context;
 
-
-    public CallAdapter(Context mContext, List<AlarmModel> mAlarmList) {
-        context = mContext;
+    public CallAdapter(List<AlarmModel> mAlarmList) {
         alarmList = mAlarmList;
     }
 
@@ -48,9 +45,7 @@ public class CallAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             AlarmModel alarm = alarmList.get(position-1);
             CallEntryHolder callHolder = (CallEntryHolder) holder;
-            callHolder.setLabelText(alarm.getLabel());
-            callHolder.setRelativeTimeText(alarm.getRelativeTimeString(context));
-            callHolder.setTimeText(alarm.getTimeString(context));
+            callHolder.bindHolder(alarm);
         }
     }
 

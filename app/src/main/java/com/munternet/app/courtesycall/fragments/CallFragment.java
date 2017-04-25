@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageButton;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +20,7 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.munternet.app.courtesycall.MainActivity;
 import com.munternet.app.courtesycall.R;
 import com.munternet.app.courtesycall.call.CallAdapter;
 import com.munternet.app.courtesycall.utils.PreferenceUtil;
@@ -62,7 +63,7 @@ public class CallFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_call, container, false);
 
-        callAdapter = new CallAdapter(getActivity(), callList);
+        callAdapter = new CallAdapter(callList);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -73,6 +74,13 @@ public class CallFragment extends Fragment {
         recyclerView.addItemDecoration(new AlarmItemViewDividerDecoration(bottomBarHeight));
 
         emptyView = rootView.findViewById(R.id.callEmptyView);
+        ImageButton overflowButton = (ImageButton) rootView.findViewById(R.id.overflowButton);
+        overflowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).stopSinchCallClient();
+            }
+        });
 
         userId = PreferenceUtil.readUserIdPreferences(getActivity());
 

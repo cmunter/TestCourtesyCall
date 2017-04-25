@@ -2,6 +2,7 @@ package com.munternet.app.courtesycall;
 
 import android.app.Application;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -16,6 +17,7 @@ public class CourtesyCallApplication extends Application {
     public void onCreate() {
         super.onCreate();
         JodaTimeAndroid.init(this);
+        FirebaseApp.initializeApp(CourtesyCallApplication.this);
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 }

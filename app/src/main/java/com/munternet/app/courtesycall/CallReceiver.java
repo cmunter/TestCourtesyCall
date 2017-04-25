@@ -15,10 +15,16 @@ public class CallReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i(TAG, "CallReceiver.onReceive()");
 
-//        Intent incomingCallIntent = new Intent(context, IncomingCallActivity.class);
-//        incomingCallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//        context.startActivity(incomingCallIntent);
+        // TODO Test UserId is still available after the app is killed
+
+        int userId = intent.getExtras().getInt("USER_ID");
+
+        Log.i(TAG, "CallReceiver.onReceive() " + userId + ", " + intent);
+
+        Intent incomingCallIntent = new Intent(context, OldIncomingCallActivity.class);
+        incomingCallIntent.putExtra("USER_ID", userId);
+        incomingCallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        context.startActivity(incomingCallIntent);
     }
 }

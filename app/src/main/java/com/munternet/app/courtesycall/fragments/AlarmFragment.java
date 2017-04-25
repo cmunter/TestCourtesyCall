@@ -61,7 +61,7 @@ public class AlarmFragment extends Fragment {
     private View emptyView;
 
     public static AlarmFragment newInstance() {
-        if (DEBUG_ALARM_FRAGMENT_LOG) Log.d(TAG, "::newInstance");
+        if (DEBUG_ALARM_FRAGMENT_LOG) Log.i(TAG, "::newInstance");
         return new AlarmFragment();
     }
 
@@ -132,7 +132,6 @@ public class AlarmFragment extends Fragment {
                         } else {
                             return -1;
                         }
-
                     }
                 });
                 alarmAdapter.notifyDataSetChanged();
@@ -193,7 +192,6 @@ public class AlarmFragment extends Fragment {
         AlarmManager mAlarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
         //long mDate = System.currentTimeMillis() + (1000*1);
         long mDate = System.currentTimeMillis() + (1000*60*2);
-
 
         Intent intent = new Intent(context, CallReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);

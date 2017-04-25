@@ -38,11 +38,13 @@ public class SinchService extends Service {
 
     @Override
     public void onCreate() {
+        Log.i(TAG, "::onCreate()");
         super.onCreate();
     }
 
     @Override
     public void onDestroy() {
+        Log.i(TAG, "::onDestroy()");
         if (mSinchClient != null && mSinchClient.isStarted()) {
             mSinchClient.terminate();
         }
@@ -50,6 +52,8 @@ public class SinchService extends Service {
     }
 
     private void start(String userName) {
+        Log.i(TAG, "::start(" + userName + ")");
+
         if (mSinchClient == null) {
             mUserId = userName;
             mSinchClient = Sinch.getSinchClientBuilder().context(getApplicationContext()).userId(userName)
@@ -69,6 +73,8 @@ public class SinchService extends Service {
     }
 
     private void stop() {
+        Log.i(TAG, "::stop()");
+
         if (mSinchClient != null) {
             mSinchClient.terminate();
             mSinchClient = null;
@@ -81,6 +87,7 @@ public class SinchService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.i(TAG, "::onBind()" + intent);
         return mSinchServiceInterface;
     }
 
@@ -91,6 +98,8 @@ public class SinchService extends Service {
         }
 
         public Call callUser(String userId) {
+            Log.i(TAG, "::callUser(" + userId + ")");
+
             if (mSinchClient == null) {
                 return null;
             }
@@ -141,7 +150,7 @@ public class SinchService extends Service {
 
         @Override
         public void onClientStarted(SinchClient client) {
-            Log.d(TAG, "SinchClient started");
+            Log.i(TAG, "SinchClient started");
             if (mListener != null) {
                 mListener.onStarted();
             }
@@ -156,7 +165,7 @@ public class SinchService extends Service {
         public void onLogMessage(int level, String area, String message) {
             switch (level) {
                 case Log.DEBUG:
-                    Log.d(area, message);
+                    Log.i(area, message);
                     break;
                 case Log.ERROR:
                     Log.e(area, message);
@@ -183,12 +192,11 @@ public class SinchService extends Service {
 
         @Override
         public void onIncomingCall(CallClient callClient, Call call) {
-            Log.d(TAG, "Incoming call");
+            Log.i(TAG, "Incoming call");
             Intent intent = new Intent(SinchService.this, IncomingCallScreenActivity.class);
             intent.putExtra(CALL_ID, call.getCallId());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             SinchService.this.startActivity(intent);
         }
     }
-
 }

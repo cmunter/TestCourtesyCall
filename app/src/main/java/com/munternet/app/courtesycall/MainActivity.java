@@ -20,19 +20,24 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.munternet.app.courtesycall.fragments.AlarmFragment;
 import com.munternet.app.courtesycall.fragments.CallFragment;
 import com.munternet.app.courtesycall.fragments.ProfileFragment;
+import com.munternet.app.courtesycall.sinch.calling.BaseActivity;
+import com.munternet.app.courtesycall.sinch.calling.SinchService;
 import com.munternet.app.courtesycall.utils.PreferenceUtil;
+import com.sinch.android.rtc.SinchError;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity implements SinchService.StartFailedListener {
 
     private static final boolean DEBUG_TAB_ACTIVITY_LOG = false;
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private BottomNavigationView mBottomBar;
 
+    private int userId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +48,34 @@ public class MainActivity extends AppCompatActivity {
 
         // checkCanDrawOverlay();
 
-        int userId = PreferenceUtil.readUserIdPreferences(MainActivity.this);
+        userId = PreferenceUtil.readUserIdPreferences(MainActivity.this);
         if(userId==0) {
             showWelcomeDialog(MainActivity.this);
         }
     }
 
+    @Override
+    protected void onServiceConnected() {
+        if (DEBUG_TAB_ACTIVITY_LOG) Log.d(TAG, "::onServiceConnected()");
+
+        if(userId>0) {
+            if (!getSinchServiceInterface().isStarted()) {
+                getSinchServiceInterface().startClient("Call" + userId);
+            }
+        }
+        getSinchServiceInterface().setStartListener(this);
+    }
+
+    @Override
+    public void onStarted() {
+        if (DEBUG_TAB_ACTIVITY_LOG) Log.d(TAG, "::onStarted()");
+    }
+
+    @Override
+    public void onStartFailed(SinchError error) {
+        if (DEBUG_TAB_ACTIVITY_LOG) Log.d(TAG, "::onStartFailed()" + error);
+        Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show();
+    }
 
     public static AlertDialog showWelcomeDialog(final Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -83,8 +110,6 @@ public class MainActivity extends AppCompatActivity {
 
         return dialog;
     }
-
-
 
     private void setupTabs() {
         if (DEBUG_TAB_ACTIVITY_LOG) Log.d(TAG, "::setupTabs");
@@ -132,4 +157,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void stopSinchCallClient() {
+        if (getSinchServiceInterface() != null) {
+            getSinchServiceInterface().stopClient();
+            Toast.makeText(this, "Stopping service.", Toast.LENGTH_LONG).show();
+        }
+        finish();
+    }
 }

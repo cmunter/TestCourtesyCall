@@ -7,7 +7,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:fitsSystemWindows="true"
-    tools:context="com.munternet.app.courtesycall.IncomingCallActivity">
+    tools:context="com.munternet.app.courtesycall.OldIncomingCallActivity">
 
     <ImageView
         android:id="@+id/bellImage"

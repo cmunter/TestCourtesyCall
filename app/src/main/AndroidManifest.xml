@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.munternet.app.courtesycall">
 
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="true"/>
+
     <!-- <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <!-- <uses-permission android:name="android.permission.WAKE_LOCK" /> -->
@@ -11,7 +15,11 @@
 
 
     <!-- <uses-permission android:name="android.permission.DISABLE_KEYGUARD" /> -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
         android:name=".CourtesyCallApplication"
@@ -30,18 +38,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".IncomingCallActivity"
+            android:name=".OldIncomingCallActivity"
             android:theme="@style/AppTheme.NoActionBar"
             />
 
         <service
             android:name=".IncommingCallService"
-            android:exported="false" />
+            android:exported="false"
+            />
         <service
             android:name=".CallService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+            />
+        <service
+            android:name=".sinch.calling.SinchService"
+            />
 
         <!-- <receiver android:name=".AutoStart" > -->
         <!-- <intent-filter> -->
