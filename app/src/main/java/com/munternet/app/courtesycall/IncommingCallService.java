@@ -4,16 +4,11 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
 import android.graphics.PixelFormat;
-import android.os.CountDownTimer;
-import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -93,7 +88,7 @@ public class IncommingCallService extends IntentService {
         Log.i("Service", "::handleActionFoo()");
 
         LayoutInflater li = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View myview = li.inflate(R.layout.activity_incoming_call, null);
+        View myview = li.inflate(R.layout.activity_outgoing_call, null);
 
 
         // TYPE_SYSTEM_ALERT, TYPE_SYSTEM_ERROR, TYPE_SYSTEM_OVERLAY, LayoutParams.TYPE_PHONE

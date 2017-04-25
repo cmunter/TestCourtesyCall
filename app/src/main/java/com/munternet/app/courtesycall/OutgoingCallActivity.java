@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +17,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.munternet.app.courtesycall.sinch.calling.BaseActivity;
@@ -27,34 +25,31 @@ import com.munternet.app.courtesycall.sinch.calling.SinchService;
 import com.sinch.android.rtc.MissingPermissionException;
 import com.sinch.android.rtc.calling.Call;
 
-public class OldIncomingCallActivity extends BaseActivity {
+public class OutgoingCallActivity extends BaseActivity {
 
     private static final boolean DEBUG = true;
-    private final String TAG = OldIncomingCallActivity.class.getName();
+    private final String TAG = OutgoingCallActivity.class.getName();
 
     private Ringtone mRingtone;
     private Vibrator mVibrator;
     private final long[] mVibratePattern = { 0, 500, 500 };
-    private Button answerButton;
+    private Button performCallButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (DEBUG) Log.i(TAG, "::onCreate");
 
         setupWindowParams();
 
-
-
         final int userId = getIntent().getExtras().getInt("USER_ID");
 
-        setContentView(R.layout.activity_incoming_call);
-        answerButton = (Button) findViewById(R.id.answerButton);
-        answerButton.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.activity_outgoing_call);
+        performCallButton = (Button) findViewById(R.id.performCallButton);
+        performCallButton.setEnabled(false);
+        performCallButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                answerButton.setText("User: " + userId);
                 performCall(userId);
                 finish();
             }
@@ -63,14 +58,13 @@ public class OldIncomingCallActivity extends BaseActivity {
         ImageView bellImage = (ImageView) findViewById(R.id.bellImage);
         Animation mAnimation = AnimationUtils.loadAnimation(this, R.anim.bell_ringing_animation);
         bellImage.startAnimation(mAnimation);
-        //ringtonePlay();
+        ringtonePlay();
     }
 
     @Override
     protected void onServiceConnected() {
         if (DEBUG) Log.i(TAG, "::onServiceConnected");
-        answerButton.setText("connected : ");
-        //mCallButton.setEnabled(true);
+        performCallButton.setEnabled(true);
     }
 
     private void performCall(int recieverUserId) {
@@ -127,7 +121,7 @@ public class OldIncomingCallActivity extends BaseActivity {
 
     private void ringtonePlay() {
         Uri mAlarmSound = Settings.System.DEFAULT_RINGTONE_URI;
-        mRingtone = RingtoneManager.getRingtone(OldIncomingCallActivity.this, mAlarmSound);
+        mRingtone = RingtoneManager.getRingtone(OutgoingCallActivity.this, mAlarmSound);
         mVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
         mRingtone.play();

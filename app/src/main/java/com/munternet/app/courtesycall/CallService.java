@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -25,7 +24,7 @@ public class CallService extends Service {
         Log.i("Service", "::onStartCommand()");
 
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        final View incomingCallView = layoutInflater.inflate(R.layout.activity_incoming_call, null);
+        final View incomingCallView = layoutInflater.inflate(R.layout.activity_outgoing_call, null);
 
 
         // TYPE_SYSTEM_ALERT, TYPE_SYSTEM_ERROR, TYPE_SYSTEM_OVERLAY, LayoutParams.TYPE_PHONE
@@ -48,12 +47,10 @@ public class CallService extends Service {
                 PixelFormat.TRANSLUCENT
         );
 
-
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         windowManager.addView(incomingCallView, params);
 
-
-        Button answerButton = (Button) incomingCallView.findViewById(R.id.answerButton);
+        Button answerButton = (Button) incomingCallView.findViewById(R.id.performCallButton);
         answerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +58,6 @@ public class CallService extends Service {
                 windowManager.removeView(incomingCallView);
             }
         });
-
 
         return super.onStartCommand(intent, flags, startId);
     }

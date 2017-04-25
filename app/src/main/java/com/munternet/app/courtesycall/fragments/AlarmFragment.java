@@ -42,7 +42,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by chrtistianmunter on 3/16/17.
+ * TODO: if alarm is less than 1 hour, schedule refresh of list item
  */
 
 public class AlarmFragment extends Fragment {
