@@ -7,64 +7,63 @@
     >
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:background="@color/colorPrimaryDarker"
-            >
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        >
 
         <TextView
-                android:id="@+id/remoteUser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="10dp"
-                android:text=""
-                android:textColor="@color/colorAccent"
-                android:textSize="28sp"/>
+            android:id="@+id/remoteUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:text=""
+            style="@style/TextDisplay"
+            />
 
         <TextView
-                android:id="@+id/callState"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Ringing"
-                android:textColor="@color/colorAccent"
-                android:textSize="16sp"
-                android:textAllCaps="true"
-                />
+            android:id="@+id/callState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Ringing"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            android:textAllCaps="true"
+            />
 
         <TextView
-                android:id="@+id/callDuration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="4dp"
-                android:text="00:00"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/colorAccent"
-                android:textSize="16sp"/>
+            android:id="@+id/callDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="4dp"
+            android:text="00:00"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"/>
 
     </LinearLayout>
 
     <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:src="@drawable/ic_courtesy_call_24dp"
-            android:padding="0dip"
-            android:layout_weight="3"
-            android:contentDescription="Call background">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_courtesy_call_24dp"
+        android:padding="0dip"
+        android:layout_weight="3"
+        android:contentDescription="Call background">
 
     </ImageView>
 
     <RelativeLayout
-            android:id="@+id/bottomPanel"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@color/colorPrimaryDark"
-            android:layout_weight="1">
+        android:id="@+id/bottomPanel"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_weight="1">
 
         <Button
             android:id="@+id/hangupButton"
