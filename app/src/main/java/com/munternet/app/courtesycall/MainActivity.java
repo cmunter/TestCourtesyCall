@@ -30,6 +30,9 @@ import com.munternet.app.courtesycall.sinch.calling.SinchService;
 import com.munternet.app.courtesycall.utils.PreferenceUtil;
 import com.sinch.android.rtc.SinchError;
 
+/**
+ * TODO: Maybe wakeup the receiving device 1 min before the alarm, to make sure the service is started and WiFi/data is on *
+ */
 public class MainActivity extends BaseActivity implements SinchService.StartFailedListener {
 
     private static final boolean DEBUG_TAB_ACTIVITY_LOG = false;
@@ -45,8 +48,6 @@ public class MainActivity extends BaseActivity implements SinchService.StartFail
         setContentView(R.layout.activity_main);
 
         setupTabs();
-
-        // checkCanDrawOverlay();
 
         userId = PreferenceUtil.readUserIdPreferences(MainActivity.this);
         if(userId==0) {
@@ -143,18 +144,6 @@ public class MainActivity extends BaseActivity implements SinchService.StartFail
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, AlarmFragment.newInstance());
         transaction.commit();
-    }
-
-    private Drawable getDrawableFromResource(int drawableResourceId) {
-        return ContextCompat.getDrawable(this, drawableResourceId);
-    }
-
-    private void checkCanDrawOverlay() {
-        if(Build.VERSION.SDK_INT >= 23 && !Settings.canDrawOverlays(MainActivity.this)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + getPackageName()));
-            startActivityForResult(intent, 1234);
-        }
     }
 
     public void stopSinchCallClient() {

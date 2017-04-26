@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.munternet.app.courtesycall.R;
+import com.munternet.app.courtesycall.utils.WindowUtil;
 import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.calling.Call;
 import com.sinch.android.rtc.calling.CallEndCause;
@@ -51,6 +52,7 @@ public class CallScreenActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sinch_callscreen);
+        WindowUtil.setupWindowParamsForOnTop(this);
 
         mAudioPlayer = new AudioPlayer(this);
         mCallDuration = (TextView) findViewById(R.id.callDuration);

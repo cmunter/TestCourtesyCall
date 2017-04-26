@@ -1,4 +1,4 @@
-package com.munternet.app.courtesycall;
+package com.munternet.app.courtesycall.oldcode;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -9,6 +9,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.munternet.app.courtesycall.R;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in

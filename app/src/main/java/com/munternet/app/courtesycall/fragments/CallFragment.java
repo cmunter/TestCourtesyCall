@@ -20,9 +20,9 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
-import com.munternet.app.courtesycall.MainActivity;
 import com.munternet.app.courtesycall.R;
 import com.munternet.app.courtesycall.call.CallAdapter;
+import com.munternet.app.courtesycall.oldcode.Temp;
 import com.munternet.app.courtesycall.utils.PreferenceUtil;
 import com.munternet.app.courtesycall.views.AlarmItemViewDividerDecoration;
 import com.munternet.app.courtesycall.models.AlarmModel;
@@ -78,7 +78,8 @@ public class CallFragment extends Fragment {
         overflowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).stopSinchCallClient();
+                Temp.testCallToUser1004(getActivity());
+                //((MainActivity)getActivity()).stopSinchCallClient();
             }
         });
 

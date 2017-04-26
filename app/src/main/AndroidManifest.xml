@@ -45,11 +45,11 @@
             />
 
         <service
-            android:name=".IncommingCallService"
+            android:name=".oldcode.IncommingCallService"
             android:exported="false"
             />
         <service
-            android:name=".CallService"
+            android:name=".oldcode.CallService"
             android:enabled="true"
             android:exported="true"
             />

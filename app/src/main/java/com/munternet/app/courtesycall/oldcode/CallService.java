@@ -1,4 +1,4 @@
-package com.munternet.app.courtesycall;
+package com.munternet.app.courtesycall.oldcode;
 
 import android.app.Service;
 import android.content.Intent;
@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+
+import com.munternet.app.courtesycall.R;
 
 public class CallService extends Service {
 

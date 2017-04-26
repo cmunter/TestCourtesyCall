@@ -40,8 +40,6 @@ public class OutgoingCallActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         if (DEBUG) Log.i(TAG, "::onCreate");
 
-        setupWindowParams();
-
         final int userId = getIntent().getExtras().getInt("USER_ID");
 
         setContentView(R.layout.activity_outgoing_call);
@@ -58,7 +56,7 @@ public class OutgoingCallActivity extends BaseActivity {
         ImageView bellImage = (ImageView) findViewById(R.id.bellImage);
         Animation mAnimation = AnimationUtils.loadAnimation(this, R.anim.bell_ringing_animation);
         bellImage.startAnimation(mAnimation);
-        ringtonePlay();
+        //ringtonePlay();
     }
 
     @Override
@@ -98,25 +96,6 @@ public class OutgoingCallActivity extends BaseActivity {
             Toast.makeText(this, "This application needs permission to use your microphone to function properly.", Toast
                     .LENGTH_LONG).show();
         }
-    }
-
-    private void setupWindowParams() {
-        getWindow().addFlags(
-                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
-                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-
-
-        //        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-//                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-//                WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-//                        |WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-//        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-        //wm.addView(yourView, params);
-
-
-        // TYPE_SYSTEM_ALERT, TYPE_SYSTEM_ERROR, TYPE_SYSTEM_OVERLAY, LayoutParams.TYPE_PHONE
-
     }
 
     private void ringtonePlay() {
