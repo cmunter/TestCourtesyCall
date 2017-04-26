@@ -15,7 +15,10 @@
     <!--Deep Orange A700-->
     <color name="colorAccent">#DD2C00</color>
 
+    <color name="acceptCall">#00C853</color>
+
     <color name="text">#FFF</color>
+    <color name="textInverted">#000</color>
     <color name="textSecondary">@color/colorPrimary</color>
 
 </resources>

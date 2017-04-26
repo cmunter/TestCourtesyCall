@@ -59,4 +59,17 @@
         <item name="android:textColor">@color/textSecondary</item>
     </style>
 
+    <style name="AppTheme.Button" parent="@style/Base.Widget.AppCompat.Button.Colored">
+        <item name="android:padding">32dp</item>
+        <item name="android:textColor">@color/textInverted</item>
+    </style>
+
+    <style name="AppTheme.Button.Accent">
+        <item name="android:colorButtonNormal">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.Button.Accept">
+        <item name="android:colorButtonNormal">@color/acceptCall</item>
+    </style>
+
 </resources>

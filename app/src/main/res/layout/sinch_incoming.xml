@@ -3,15 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="5"
-    >
+    android:weightSum="5">
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
             android:layout_weight="1"
-            android:background="@color/colorPrimaryLessDark"
+            android:background="@color/colorPrimaryDarker"
             >
 
         <TextView
@@ -61,7 +60,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Answer"
-                style="@style/Base.Widget.AppCompat.Button.Colored"
+                android:theme="@style/AppTheme.Button.Accept"
+                android:layout_marginEnd="8dp"
                 />
 
             <Button
@@ -69,8 +69,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Decline"
-                style="@style/Base.Widget.AppCompat.Button.Colored"
+                android:theme="@style/AppTheme.Button.Accent"
                 android:layout_toRightOf="@+id/answerButton"
+                android:layout_marginStart="8dp"
                 />
 
     </RelativeLayout>
