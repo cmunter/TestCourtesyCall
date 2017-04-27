@@ -1,8 +1,11 @@
 package com.munternet.app.courtesycall;
 
+import android.*;
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -42,6 +45,8 @@ public class MainActivity extends BaseActivity implements SinchService.StartFail
 
     private int userId = -1;
 
+    private static final int WRITE_STORAGE_PERMISSION_REQUEST_CODE = 111;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +56,9 @@ public class MainActivity extends BaseActivity implements SinchService.StartFail
 
         userId = PreferenceUtil.readUserIdPreferences(MainActivity.this);
         if(userId==0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, WRITE_STORAGE_PERMISSION_REQUEST_CODE);
+            }
             showWelcomeDialog(MainActivity.this);
         }
     }
@@ -110,6 +118,25 @@ public class MainActivity extends BaseActivity implements SinchService.StartFail
         dialog.show();
 
         return dialog;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], int[] grantResults) {
+        if (DEBUG_TAB_ACTIVITY_LOG) Log.d(TAG, "::onRequestPermissionsResult");
+
+        switch (requestCode) {
+            case WRITE_STORAGE_PERMISSION_REQUEST_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (DEBUG_TAB_ACTIVITY_LOG) Log.d(TAG, "::onRequestPermissionsResult PERMISSION_GRANTED take photo");
+                    // DO nothing right now. This could later be moved into a wizard
+                } else {
+                    if (DEBUG_TAB_ACTIVITY_LOG) Log.e(TAG, "::onRequestPermissionsResult PERMISSION_DENIED");
+                }
+                break;
+            }
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     private void setupTabs() {

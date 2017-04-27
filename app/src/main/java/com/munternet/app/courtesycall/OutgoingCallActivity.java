@@ -56,7 +56,7 @@ public class OutgoingCallActivity extends BaseActivity {
         ImageView bellImage = (ImageView) findViewById(R.id.bellImage);
         Animation mAnimation = AnimationUtils.loadAnimation(this, R.anim.bell_ringing_animation);
         bellImage.startAnimation(mAnimation);
-        //ringtonePlay();
+        ringtonePlay();
     }
 
     @Override
