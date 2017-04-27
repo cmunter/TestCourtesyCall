@@ -3,9 +3,12 @@ package com.munternet.app.courtesycall.sinch.calling;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.munternet.app.courtesycall.utils.PreferenceUtil;
+import com.munternet.app.courtesycall.utils.SinchUtil;
 import com.sinch.android.rtc.ClientRegistration;
 import com.sinch.android.rtc.Sinch;
 import com.sinch.android.rtc.SinchClient;
@@ -35,6 +38,29 @@ public class SinchService extends Service {
     private String mUserId;
 
     private StartFailedListener mListener;
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        int userIdTemp = PreferenceUtil.readUserIdPreferences(this);
+
+        Bundle extrasBundle = null;
+        if(intent!=null && intent.getExtras()!=null) {
+            extrasBundle = intent.getExtras();
+        }
+
+        Log.i(TAG, "::onStartCommand() " + intent + ", bundle: " + extrasBundle + ", userLocal: " + userIdTemp);
+
+        if(intent!=null && intent.getExtras()!=null) {
+            int userId = intent.getExtras().getInt("USER_ID");
+            if(userId>0) {
+                start(SinchUtil.sinchUserName(userId));
+                Log.i(TAG, "::onStartCommand() " + intent + userId);
+            }
+        }
+
+        return super.onStartCommand(intent, flags, startId);
+    }
 
     @Override
     public void onCreate() {

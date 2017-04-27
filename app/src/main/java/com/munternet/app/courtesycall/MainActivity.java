@@ -1,23 +1,16 @@
 package com.munternet.app.courtesycall;
 
-import android.*;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -31,6 +24,7 @@ import com.munternet.app.courtesycall.fragments.ProfileFragment;
 import com.munternet.app.courtesycall.sinch.calling.BaseActivity;
 import com.munternet.app.courtesycall.sinch.calling.SinchService;
 import com.munternet.app.courtesycall.utils.PreferenceUtil;
+import com.munternet.app.courtesycall.utils.SinchUtil;
 import com.sinch.android.rtc.SinchError;
 
 /**
@@ -69,7 +63,7 @@ public class MainActivity extends BaseActivity implements SinchService.StartFail
 
         if(userId>0) {
             if (!getSinchServiceInterface().isStarted()) {
-                getSinchServiceInterface().startClient("Call" + userId);
+                getSinchServiceInterface().startClient(SinchUtil.sinchUserName(userId));
             }
         }
         getSinchServiceInterface().setStartListener(this);
