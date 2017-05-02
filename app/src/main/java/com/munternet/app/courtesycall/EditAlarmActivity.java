@@ -26,6 +26,12 @@ import com.munternet.app.courtesycall.utils.PreferenceUtil;
 
 import org.joda.time.DateTime;
 
+/**
+ *
+ * TODO:
+ *  - It should not be possible to create alarms that are shorter than 15 mins away
+ *
+ */
 public class EditAlarmActivity extends AppCompatActivity {
 
     private static final String TAG = "EditAlarmActivity";

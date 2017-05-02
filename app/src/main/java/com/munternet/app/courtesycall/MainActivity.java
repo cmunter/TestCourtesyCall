@@ -28,7 +28,9 @@ import com.munternet.app.courtesycall.utils.SinchUtil;
 import com.sinch.android.rtc.SinchError;
 
 /**
- * TODO: Maybe wakeup the receiving device 1 min before the alarm, to make sure the service is started and WiFi/data is on *
+ * TODO:
+ * - Maybe wakeup the receiving device 1 min before the alarm, to make sure the service is started and WiFi/data is on
+ * - Add language to the alarm (Alarm label). This needs to be included in firebase
  */
 public class MainActivity extends BaseActivity implements SinchService.StartFailedListener {
 
