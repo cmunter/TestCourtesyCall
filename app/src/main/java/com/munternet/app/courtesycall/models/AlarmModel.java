@@ -6,6 +6,8 @@ import net.danlew.android.joda.DateUtils;
 
 import org.joda.time.DateTime;
 
+import java.util.Objects;
+
 /**
  * Firebase model for the alarm
  */
@@ -105,4 +107,21 @@ public class AlarmModel {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "id: " + id + ", Label: " + label + ", time: " + timeInMillis;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AlarmModel that = (AlarmModel) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

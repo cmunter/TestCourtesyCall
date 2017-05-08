@@ -29,19 +29,16 @@ import com.munternet.app.courtesycall.models.AlarmModel;
 
 import org.joda.time.DateTime;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Created by chrtistianmunter on 3/17/17.
+ *
  */
 
 public class CallFragment extends Fragment {
 
     private static final String TAG = CallFragment.class.getSimpleName();
-    private static final boolean DEBUG_LIVE_FRAGMENT_LOG = false;
+    private static final boolean DEBUG_LIVE_FRAGMENT_LOG = true;
 
-    private List<AlarmModel> callList = new ArrayList<>();
     private RecyclerView recyclerView;
     private CallAdapter callAdapter;
     private View emptyView;
@@ -54,7 +51,7 @@ public class CallFragment extends Fragment {
     private int userId = -1;
 
     public static CallFragment newInstance() {
-        if (DEBUG_LIVE_FRAGMENT_LOG) Log.d(TAG, "::newInstance");
+        if (DEBUG_LIVE_FRAGMENT_LOG) Log.i(TAG, "::newInstance");
         return new CallFragment();
     }
 
@@ -63,7 +60,7 @@ public class CallFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_call, container, false);
 
-        callAdapter = new CallAdapter(callList);
+        callAdapter = new CallAdapter();
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -87,7 +84,6 @@ public class CallFragment extends Fragment {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        // TODO Do not show your own alarms. These should be filtered
         databaseQuery = database.getReference("alarms")
                 .orderByChild("timeInMillis")
                 .startAt(DateTime.now().getMillis())    // limit to alarms after this time TODO: is there a problem with time zones?
@@ -127,41 +123,49 @@ public class CallFragment extends Fragment {
         return new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.i(TAG, "onChildAdded: " + dataSnapshot.getKey());
 
                 AlarmModel value = dataSnapshot.getValue(AlarmModel.class);
+                if (DEBUG_LIVE_FRAGMENT_LOG) Log.i(TAG, "::onChildAdded: " + value);
                 int alarmUserId = -1;
                 try {
                     alarmUserId = Integer.parseInt(value.getUserId());
                 } catch (NumberFormatException e) {
                     // Ignore for now
                 }
-
+                // Do not show your own alarms
                 if(alarmUserId!=userId) {
-                    callList.add(value);
-                    callAdapter.notifyDataSetChanged();
+                    callAdapter.add(value);
                     hideEmptyView();
                 }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Log.i(TAG, "onChildChanged: " + dataSnapshot.getKey());
+                AlarmModel value = dataSnapshot.getValue(AlarmModel.class);
+                int index = callAdapter.indexOf(value);
+                if (DEBUG_LIVE_FRAGMENT_LOG) Log.i(TAG, "::onChildChanged: " + value + ", index: " + index + ", string: " + s);
+//                if(index>-1)callAdapter.updateItemAt(index, value);
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Log.i(TAG, "onChildRemoved: " + dataSnapshot.getKey());
+                AlarmModel value = dataSnapshot.getValue(AlarmModel.class);
+                if (DEBUG_LIVE_FRAGMENT_LOG) Log.i(TAG, "::onChildRemoved: " + value);
+                callAdapter.remove(value);
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                Log.i(TAG, "onChildMoved: " + dataSnapshot.getKey());
+                AlarmModel value = dataSnapshot.getValue(AlarmModel.class);
+                int index = callAdapter.indexOf(value);
+                if (DEBUG_LIVE_FRAGMENT_LOG) Log.i(TAG, "::onChildMoved: " + value + ", Index: " + index + ", string: " + s);
+
+                if(index>=0)callAdapter.updateItemAt(index, value);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.i(TAG, "onCancelled: " + databaseError.getMessage());
+                if (DEBUG_LIVE_FRAGMENT_LOG) Log.i(TAG, "::onCancelled: " + databaseError.getMessage());
             }
         };
     }
@@ -204,7 +208,7 @@ public class CallFragment extends Fragment {
 
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-                Log.i(TAG, "postTransaction:onComplete:" + databaseError);
+                if (DEBUG_LIVE_FRAGMENT_LOG) Log.i(TAG, "::onComplete:" + databaseError);
             }
         });
     }
