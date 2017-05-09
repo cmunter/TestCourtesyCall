@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.munternet.app.courtesycall.constants.CallIntentExtrasConstants;
 import com.munternet.app.courtesycall.sinch.calling.SinchService;
 import com.munternet.app.courtesycall.utils.PreferenceUtil;
 
@@ -21,7 +22,7 @@ public class AutoStartReceiver extends BroadcastReceiver {
 
         if(userId>0) {
             Intent startServiceIntent = new Intent(context, SinchService.class);
-            startServiceIntent.putExtra("USER_ID", userId);
+            startServiceIntent.putExtra(CallIntentExtrasConstants.USER_ID, userId);
             context.startService(startServiceIntent);
         }
     }

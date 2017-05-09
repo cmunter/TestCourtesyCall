@@ -25,10 +25,16 @@ import com.sinch.android.rtc.calling.CallEndCause;
 import com.sinch.android.rtc.calling.CallListener;
 
 import java.util.List;
+import java.util.Map;
+
+import static com.munternet.app.courtesycall.constants.CallIntentExtrasConstants.ALARM_LABEL;
+import static com.munternet.app.courtesycall.constants.DevelopmentConstants.SILENCE_RINGTONE;
 
 public class IncomingCallScreenActivity extends BaseActivity {
 
     static final String TAG = IncomingCallScreenActivity.class.getSimpleName();
+    private static final boolean DEBUG = true;
+
     private String mCallId;
     private AudioPlayer mAudioPlayer;
 
@@ -44,17 +50,29 @@ public class IncomingCallScreenActivity extends BaseActivity {
         decline.setOnClickListener(mClickListener);
 
         mAudioPlayer = new AudioPlayer(this);
-        mAudioPlayer.playRingtone();
+        if(!SILENCE_RINGTONE) mAudioPlayer.playRingtone();
         mCallId = getIntent().getStringExtra(SinchService.CALL_ID);
     }
 
     @Override
     protected void onServiceConnected() {
+        if(DEBUG) Log.i(TAG, "::onServiceConnected headerValue");
         Call call = getSinchServiceInterface().getCall(mCallId);
         if (call != null) {
             call.addCallListener(new SinchCallListener());
+
+//            for(String headerKey : call.getHeaders().keySet()) {
+//                if(DEBUG) Log.i(TAG, "::onServiceConnected headerKey: " + headerKey);
+//            }
+//            for(String headerValue : call.getHeaders().values()) {
+//                if(DEBUG) Log.i(TAG, "::onServiceConnected headerValue: " + headerValue);
+//            }
+
+            Map<String, String> headerMap = call.getHeaders();
+            String alarmLabel = headerMap.get(ALARM_LABEL);
             TextView remoteUser = (TextView) findViewById(R.id.remoteUser);
-            remoteUser.setText(call.getRemoteUserId());
+            //remoteUser.setText(call.getRemoteUserId());
+            remoteUser.setText(alarmLabel);
         } else {
             Log.e(TAG, "Started with invalid callId, aborting");
             finish();

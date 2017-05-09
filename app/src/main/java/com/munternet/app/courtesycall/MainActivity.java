@@ -94,10 +94,10 @@ public class MainActivity extends BaseActivity implements SinchService.StartFail
         userNameView.setText(userName);
         if(userId>0) userIdView.setText(String.valueOf(userId));
 
-        AlertDialog.Builder dialogbuilder = new AlertDialog.Builder(context);
-        dialogbuilder.setTitle("Welcome");
-        dialogbuilder.setView(dialogView);
-        dialogbuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        dialogBuilder.setTitle("Welcome");
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 int id = 0;
@@ -110,7 +110,7 @@ public class MainActivity extends BaseActivity implements SinchService.StartFail
                 PreferenceUtil.saveAccountPreferences(context, userNameView.getText().toString(), id);
             }
         });
-        AlertDialog dialog = dialogbuilder.create();
+        AlertDialog dialog = dialogBuilder.create();
         dialog.show();
 
         return dialog;

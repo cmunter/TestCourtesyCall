@@ -144,6 +144,14 @@ public class EditAlarmActivity extends AppCompatActivity {
         alarmLabelText = (EditText) findViewById(R.id.alarmItemLabelText);
         alarmTimeButton = (Button) findViewById(R.id.alarmItemTimeButton);
         alarmDateButton = (Button) findViewById(R.id.alarmItemDateButton);
+
+        Button okButton = (Button) findViewById(R.id.okButton);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void populateViews() {
@@ -173,13 +181,17 @@ public class EditAlarmActivity extends AppCompatActivity {
         boolean is24hClock = true;
 
         final DateTime dateTime = new DateTime(alarmModel.getTimeInMillis());
+        final int mYear = dateTime.getYear();
+        final int mMonth = dateTime.getMonthOfYear();
+        final int mDay = dateTime.getDayOfMonth();
 
         final int mMinute = dateTime.getMinuteOfHour();
         final int mHour = dateTime.getHourOfDay();
         TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                DateTime newDateTime = dateTime.plusHours(selectedHour-mHour).plusMinutes(selectedMinute-mMinute);
+                DateTime newDateTime = new DateTime(mYear, mMonth, mDay, selectedHour, selectedMinute);
+
                 alarmModel.setTimeInMillis(newDateTime.getMillis());
                 String time = alarmModel.getTimeString(EditAlarmActivity.this);
                 alarmTimeButton.setText(time);
@@ -197,13 +209,15 @@ public class EditAlarmActivity extends AppCompatActivity {
         final int mMonth = dateTime.getMonthOfYear();
         final int mDay = dateTime.getDayOfMonth();
 
+        final int mMinute = dateTime.getMinuteOfHour();
+        final int mHour = dateTime.getHourOfDay();
+
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
                 Log.i(TAG, "onDateSet DATE current month: " + mMonth + ", selected: " + month);
+                DateTime newDateTime = new DateTime(year, month+1, dayOfMonth, mHour, mMinute);
 
-                DateTime newDateTime = dateTime.plusYears(year-mYear).plusMonths((month+1)-mMonth).plusDays(dayOfMonth-mDay);
                 alarmModel.setTimeInMillis(newDateTime.getMillis());
                 String date = alarmModel.getDateString(EditAlarmActivity.this);
                 alarmDateButton.setText(date);

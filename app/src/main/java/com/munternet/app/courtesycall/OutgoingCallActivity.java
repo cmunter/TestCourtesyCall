@@ -12,18 +12,24 @@ import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.munternet.app.courtesycall.constants.CallIntentExtrasConstants;
 import com.munternet.app.courtesycall.sinch.calling.BaseActivity;
 import com.munternet.app.courtesycall.sinch.calling.CallScreenActivity;
 import com.munternet.app.courtesycall.sinch.calling.SinchService;
 import com.sinch.android.rtc.MissingPermissionException;
 import com.sinch.android.rtc.calling.Call;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.munternet.app.courtesycall.constants.DevelopmentConstants.SILENCE_RINGTONE;
 
 public class OutgoingCallActivity extends BaseActivity {
 
@@ -40,23 +46,32 @@ public class OutgoingCallActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         if (DEBUG) Log.i(TAG, "::onCreate");
 
-        final int userId = getIntent().getExtras().getInt("USER_ID");
-
         setContentView(R.layout.activity_outgoing_call);
+
+        if(!SILENCE_RINGTONE) ringtonePlay();
+
+        final int userId = getIntent().getExtras().getInt(CallIntentExtrasConstants.USER_ID);
+        String alarmLabel = getIntent().getExtras().getString(CallIntentExtrasConstants.ALARM_LABEL);
+
+        final Map<String, String> headerMap = new HashMap<>();
+        headerMap.put(CallIntentExtrasConstants.ALARM_LABEL, alarmLabel);
+
         performCallButton = (Button) findViewById(R.id.performCallButton);
         performCallButton.setEnabled(false);
         performCallButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                performCall(userId);
+                performCall(userId, headerMap);
                 finish();
             }
         });
 
+        TextView alarmLabelText = (TextView) findViewById(R.id.infoText);
+        alarmLabelText.setText(alarmLabel);
+
         ImageView bellImage = (ImageView) findViewById(R.id.bellImage);
         Animation mAnimation = AnimationUtils.loadAnimation(this, R.anim.bell_ringing_animation);
         bellImage.startAnimation(mAnimation);
-        ringtonePlay();
     }
 
     @Override
@@ -65,15 +80,11 @@ public class OutgoingCallActivity extends BaseActivity {
         performCallButton.setEnabled(true);
     }
 
-    private void performCall(int recieverUserId) {
-        String userName = "Call" + recieverUserId;
-        if (userName.isEmpty()) {
-            Toast.makeText(this, "Please enter a user to call", Toast.LENGTH_LONG).show();
-            return;
-        }
-
+    private void performCall(int receiverUserId, Map<String, String> headerMap) {
+        String userName = "Call" + receiverUserId;
         try {
-            Call call = getSinchServiceInterface().callUser(userName);
+            Call call = getSinchServiceInterface().callUser(userName, headerMap);
+
             if (call == null) {
                 // Service failed for some reason, show a Toast and abort
                 Toast.makeText(this, "Service is not started. Try stopping the service and starting it again before "
@@ -92,6 +103,7 @@ public class OutgoingCallActivity extends BaseActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, "You may now place a call", Toast.LENGTH_LONG).show();
+            // TODO: this should proceede to performing the outgoing call
         } else {
             Toast.makeText(this, "This application needs permission to use your microphone to function properly.", Toast
                     .LENGTH_LONG).show();

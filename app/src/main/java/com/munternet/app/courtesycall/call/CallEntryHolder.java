@@ -12,8 +12,9 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.munternet.app.courtesycall.CallReceiver;
+import com.munternet.app.courtesycall.PerformOutgoingCallReceiver;
 import com.munternet.app.courtesycall.R;
+import com.munternet.app.courtesycall.constants.CallIntentExtrasConstants;
 import com.munternet.app.courtesycall.models.AlarmModel;
 
 /**
@@ -101,8 +102,9 @@ public class CallEntryHolder extends RecyclerView.ViewHolder {
         int userId = Integer.parseInt(alarmModel.getUserId());
         Log.i("MUNTER", "::setAlarm() " + userId);
 
-        Intent intent = new Intent(context, CallReceiver.class);
-        intent.putExtra("USER_ID", userId);
+        Intent intent = new Intent(context, PerformOutgoingCallReceiver.class);
+        intent.putExtra(CallIntentExtrasConstants.USER_ID, userId);
+        intent.putExtra(CallIntentExtrasConstants.ALARM_LABEL, alarmModel.getLabel());
 
         // TODO use the Alarm ID in the requestcode to make it possible to remove the pending intent
         PendingIntent sender = PendingIntent.getBroadcast(context, 1000, intent, PendingIntent.FLAG_UPDATE_CURRENT);

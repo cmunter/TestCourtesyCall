@@ -17,6 +17,8 @@ import com.sinch.android.rtc.calling.Call;
 import com.sinch.android.rtc.calling.CallClient;
 import com.sinch.android.rtc.calling.CallClientListener;
 
+import java.util.Map;
+
 /**
  *
  *
@@ -112,13 +114,13 @@ public class SinchService extends Service {
             return mSinchClient.getCallClient().callPhoneNumber(phoneNumber);
         }
 
-        public Call callUser(String userId) {
+        public Call callUser(String userId, Map<String, String> headerMap) {
             Log.i(TAG, "::callUser(" + userId + ")");
 
             if (mSinchClient == null) {
                 return null;
             }
-            return mSinchClient.getCallClient().callUser(userId);
+            return mSinchClient.getCallClient().callUser(userId, headerMap);
         }
 
         public String getUserName() {
