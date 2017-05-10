@@ -54,13 +54,9 @@
     </style>
 
     <style name="TextSmall.AlarmItemTime">
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/textSecondary</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
-    </style>
-
-    <style name="AppTheme.TextSmall.Secondary" parent="TextSmall">
-        <item name="android:textColor">@color/textSecondary</item>
     </style>
 
     <style name="AppTheme.Button" parent="@style/Base.Widget.AppCompat.Button.Colored">
