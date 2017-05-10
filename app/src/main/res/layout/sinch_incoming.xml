@@ -14,11 +14,13 @@
         />
 
     <TextView
-        android:id="@+id/remoteUser"
+        android:id="@+id/callState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sample user"
-        style="@style/TextDisplay"
+        android:text="Incoming call"
+        android:textColor="@color/colorAccent"
+        style="@style/TextSmall"
+        android:textAllCaps="true"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="16dp"
@@ -26,15 +28,13 @@
         />
 
     <TextView
-        android:id="@+id/callState"
+        android:id="@+id/remoteUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Incoming call"
-        android:textColor="@color/colorAccent"
-        android:textSize="16sp"
-        android:textAllCaps="true"
+        android:text="Sample user"
+        style="@style/TextDisplay"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/remoteUser"
+        android:layout_below="@id/callState"
         />
 
     <RelativeLayout

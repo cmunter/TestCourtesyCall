@@ -17,28 +17,26 @@
         />
 
     <TextView
-        android:id="@+id/infoText"
-        android:padding="8dp"
-        android:layout_marginBottom="32dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/bellImage"
-        android:layout_centerHorizontal="true"
-        android:text="TODO: Add info regarding the call here"
-        style="@style/TextDisplay"
-        android:textColor="@color/colorAccent"
-        android:gravity="center_horizontal"
-        />
-
-    <TextView
         android:id="@+id/answerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/infoText"
-        android:layout_centerHorizontal="true"
         android:text="@string/app_name"
         style="@style/TextSmall"
         android:textColor="@color/colorAccent"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        />
+
+    <TextView
+        android:id="@+id/infoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alarm label"
+        style="@style/TextDisplay"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/answerText"
         />
 
     <Button

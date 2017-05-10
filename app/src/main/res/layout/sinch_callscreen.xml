@@ -14,27 +14,27 @@
         />
 
     <TextView
-        android:id="@+id/remoteUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:text=""
-        style="@style/TextDisplay"
-        />
-
-    <TextView
         android:id="@+id/callState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ringing"
         android:textColor="@color/colorAccent"
-        android:textSize="16sp"
+        style="@style/TextSmall"
         android:textAllCaps="true"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/remoteUser"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        />
+
+    <TextView
+        android:id="@+id/remoteUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        style="@style/TextDisplay"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/callState"
         android:layout_marginBottom="8dp"
         />
 
@@ -42,13 +42,11 @@
         android:id="@+id/callDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:text="00:00"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/colorAccent"
-        android:textSize="16sp"
+        style="@style/TextSmall"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/callState"
+        android:layout_below="@id/remoteUser"
         android:layout_marginBottom="8dp"
         />
 
