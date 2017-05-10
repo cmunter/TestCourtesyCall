@@ -1,7 +1,10 @@
 package com.munternet.app.courtesycall.sinch.calling;
 
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,6 +37,9 @@ public class CallScreenActivity extends BaseActivity {
     private TextView mCallDuration;
     private TextView mCallState;
     private TextView mCallerName;
+
+    private PowerManager mPowerManager;
+    private PowerManager.WakeLock mWakeLock;
 
     private class UpdateCallDurationTask extends TimerTask {
 
@@ -84,22 +90,45 @@ public class CallScreenActivity extends BaseActivity {
 
     @Override
     public void onPause() {
+        Log.i(TAG, "::onPause");
         super.onPause();
         mDurationTask.cancel();
         mTimer.cancel();
+        destroyAutoScreenOff();
     }
 
     @Override
     public void onResume() {
+        Log.i(TAG, "::onResume");
         super.onResume();
         mTimer = new Timer();
         mDurationTask = new UpdateCallDurationTask();
         mTimer.schedule(mDurationTask, 0, 500);
+
+        initAutoScreenOff();
+        startAutoScreenOff();
     }
 
     @Override
     public void onBackPressed() {
         // User should exit activity by ending call, not by going back.
+    }
+
+    @TargetApi(21) //Suppress lint error for PROXIMITY_SCREEN_OFF_WAKE_LOCK
+    private void startAutoScreenOff() {
+        Log.i(TAG, "::startAutoScreenOff");
+        mWakeLock = mPowerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "tag");
+        mWakeLock.acquire();
+    }
+
+    private void initAutoScreenOff() {
+        Log.i(TAG, "::initAutoScreenOff");
+        mPowerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+    }
+
+    private void destroyAutoScreenOff() {
+        Log.i(TAG, "::destroyAutoScreenOff");
+        mWakeLock.release();
     }
 
     private void endCall() {
