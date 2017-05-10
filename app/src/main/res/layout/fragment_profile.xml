@@ -50,4 +50,15 @@
         style="@style/Base.Widget.AppCompat.Button.Colored"
         />
 
+    <TextView
+        android:id="@+id/versionNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="version 0.0"
+        style="@style/TextSmall"
+        android:layout_margin="8dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:alpha="0.3"
+        />
 </RelativeLayout>
