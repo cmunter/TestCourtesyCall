@@ -10,6 +10,7 @@ import android.hardware.SensorManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -49,6 +50,7 @@ public class OutgoingCallActivity extends BaseActivity {
     private float[] currentAcceleration;
     private SensorManager sensorManager;
     private boolean isMovementDetected = false;
+    private boolean isTimeThresholdPassedWithoutMovement = false;
     private SensorEventListener listener;
 
     @Override
@@ -145,9 +147,19 @@ public class OutgoingCallActivity extends BaseActivity {
 
     private void startDetectMovement() {
         final float MOVEMENT_THRESHOLD = 5;
+        final int TIME_THRESHOLD = 2000;
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        // Try and detect if the device is already in motion
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(!isMovementDetected) isTimeThresholdPassedWithoutMovement = true;
+            }
+        }, TIME_THRESHOLD);
 
         listener = new SensorEventListener() {
             @Override
@@ -171,7 +183,7 @@ public class OutgoingCallActivity extends BaseActivity {
 
                     if (DEBUG) Log.i(TAG, "::onSensorChanged() x: " + x + ", y: " + y + ",z: " + z);
 
-                    if(isMovementDetected) {
+                    if(isMovementDetected && isTimeThresholdPassedWithoutMovement) {
                         if (DEBUG) Log.i(TAG, "::onSensorChanged() isMovementDetected");
                         stopRingtone();
                         sensorManager.unregisterListener(listener);
