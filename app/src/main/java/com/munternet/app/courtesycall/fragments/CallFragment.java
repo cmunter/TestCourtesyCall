@@ -67,9 +67,6 @@ public class CallFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(callAdapter);
 
-        int bottomBarHeight = getResources().getDimensionPixelSize(R.dimen.alarm_list_bottom_padding);
-        recyclerView.addItemDecoration(new AlarmItemViewDividerDecoration(bottomBarHeight));
-
         emptyView = rootView.findViewById(R.id.callEmptyView);
         ImageButton overflowButton = (ImageButton) rootView.findViewById(R.id.overflowButton);
         overflowButton.setOnClickListener(new View.OnClickListener() {
