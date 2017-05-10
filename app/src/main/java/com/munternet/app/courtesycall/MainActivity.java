@@ -34,14 +34,14 @@ import com.sinch.android.rtc.SinchError;
  */
 public class MainActivity extends BaseActivity implements SinchService.StartFailedListener {
 
-    private static final boolean DEBUG_TAB_ACTIVITY_LOG = false;
+    private static final boolean DEBUG_TAB_ACTIVITY_LOG = true;
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private BottomNavigationView mBottomBar;
 
     private int userId = -1;
 
-    private static final int WRITE_STORAGE_PERMISSION_REQUEST_CODE = 111;
+    private static final int PERMISSION_REQUEST_CODE = 111;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class MainActivity extends BaseActivity implements SinchService.StartFail
         userId = PreferenceUtil.readUserIdPreferences(MainActivity.this);
         if(userId==0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, WRITE_STORAGE_PERMISSION_REQUEST_CODE);
+                requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, PERMISSION_REQUEST_CODE);
             }
             showWelcomeDialog(MainActivity.this);
         }
@@ -61,7 +61,7 @@ public class MainActivity extends BaseActivity implements SinchService.StartFail
 
     @Override
     protected void onServiceConnected() {
-        if (DEBUG_TAB_ACTIVITY_LOG) Log.d(TAG, "::onServiceConnected()");
+        if (DEBUG_TAB_ACTIVITY_LOG) Log.i(TAG, "::onServiceConnected()");
 
         if(userId>0) {
             if (!getSinchServiceInterface().isStarted()) {
@@ -73,12 +73,12 @@ public class MainActivity extends BaseActivity implements SinchService.StartFail
 
     @Override
     public void onStarted() {
-        if (DEBUG_TAB_ACTIVITY_LOG) Log.d(TAG, "::onStarted()");
+        if (DEBUG_TAB_ACTIVITY_LOG) Log.i(TAG, "::onStarted()");
     }
 
     @Override
     public void onStartFailed(SinchError error) {
-        if (DEBUG_TAB_ACTIVITY_LOG) Log.d(TAG, "::onStartFailed()" + error);
+        if (DEBUG_TAB_ACTIVITY_LOG) Log.i(TAG, "::onStartFailed()" + error);
         Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show();
     }
 
@@ -118,12 +118,12 @@ public class MainActivity extends BaseActivity implements SinchService.StartFail
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], int[] grantResults) {
-        if (DEBUG_TAB_ACTIVITY_LOG) Log.d(TAG, "::onRequestPermissionsResult");
+        if (DEBUG_TAB_ACTIVITY_LOG) Log.i(TAG, "::onRequestPermissionsResult");
 
         switch (requestCode) {
-            case WRITE_STORAGE_PERMISSION_REQUEST_CODE: {
+            case PERMISSION_REQUEST_CODE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (DEBUG_TAB_ACTIVITY_LOG) Log.d(TAG, "::onRequestPermissionsResult PERMISSION_GRANTED take photo");
+                    if (DEBUG_TAB_ACTIVITY_LOG) Log.i(TAG, "::onRequestPermissionsResult PERMISSION_GRANTED");
                     // DO nothing right now. This could later be moved into a wizard
                 } else {
                     if (DEBUG_TAB_ACTIVITY_LOG) Log.e(TAG, "::onRequestPermissionsResult PERMISSION_DENIED");
@@ -169,11 +169,4 @@ public class MainActivity extends BaseActivity implements SinchService.StartFail
         transaction.commit();
     }
 
-    public void stopSinchCallClient() {
-        if (getSinchServiceInterface() != null) {
-            getSinchServiceInterface().stopClient();
-            Toast.makeText(this, "Stopping service.", Toast.LENGTH_LONG).show();
-        }
-        finish();
-    }
 }

@@ -3,6 +3,10 @@ package com.munternet.app.courtesycall;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -41,6 +45,12 @@ public class OutgoingCallActivity extends BaseActivity {
     private final long[] mVibratePattern = { 0, 500, 500 };
     private Button performCallButton;
 
+    private float[] lastAcceleration;
+    private float[] currentAcceleration;
+    private SensorManager sensorManager;
+    private boolean isMovementDetected = false;
+    private SensorEventListener listener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +82,8 @@ public class OutgoingCallActivity extends BaseActivity {
         ImageView bellImage = (ImageView) findViewById(R.id.bellImage);
         Animation mAnimation = AnimationUtils.loadAnimation(this, R.anim.bell_ringing_animation);
         bellImage.startAnimation(mAnimation);
+
+        startDetectMovement();
     }
 
     @Override
@@ -121,9 +133,60 @@ public class OutgoingCallActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
+        stopRingtone();
+        stopDetectMovement();
+        super.onPause();
+    }
+
+    private void stopRingtone() {
         if(mRingtone!=null) mRingtone.stop();
         if(mVibrator!=null) mVibrator.cancel();
+    }
 
-        super.onPause();
+    private void startDetectMovement() {
+        final float MOVEMENT_THRESHOLD = 5;
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        listener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                    currentAcceleration = event.values.clone();
+                    if(lastAcceleration==null) lastAcceleration = currentAcceleration;
+
+                    // Movement detection
+                    float x = currentAcceleration[0] - lastAcceleration[0];
+                    float y = currentAcceleration[1] - lastAcceleration[1];
+                    float z = currentAcceleration[2] - lastAcceleration[2];
+
+                    if(x>MOVEMENT_THRESHOLD || x<(-MOVEMENT_THRESHOLD)) {
+                        isMovementDetected = true;
+                    } else if (y>MOVEMENT_THRESHOLD || y<(-MOVEMENT_THRESHOLD)) {
+                        isMovementDetected = true;
+                    } else if (z>MOVEMENT_THRESHOLD || z<(-MOVEMENT_THRESHOLD)) {
+                        isMovementDetected = true;
+                    }
+
+                    if (DEBUG) Log.i(TAG, "::onSensorChanged() x: " + x + ", y: " + y + ",z: " + z);
+
+                    if(isMovementDetected) {
+                        if (DEBUG) Log.i(TAG, "::onSensorChanged() isMovementDetected");
+                        stopRingtone();
+                        sensorManager.unregisterListener(listener);
+                    }
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) { }
+        };
+
+        sensorManager.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    private void stopDetectMovement() {
+        sensorManager.unregisterListener(listener);
     }
 }
