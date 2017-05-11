@@ -27,7 +27,7 @@ public class Temp {
 
     public static void testCallToUser1004(Context context) {
         Intent incomingCallIntent = new Intent(context, OutgoingCallActivity.class);
-        incomingCallIntent.putExtra(CallIntentExtrasConstants.USER_ID, 1004);
+        incomingCallIntent.putExtra(CallIntentExtrasConstants.USER_ID, 4004);
         incomingCallIntent.putExtra(CallIntentExtrasConstants.ALARM_LABEL, "Alarm label for test");
         incomingCallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         context.startActivity(incomingCallIntent);

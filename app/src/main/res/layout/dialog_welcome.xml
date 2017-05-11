@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:hint="Your name"
         android:imeOptions="actionNext"
+        android:lines="1"
         />
 
     <EditText
@@ -22,6 +23,7 @@
         android:hint="User ID"
         android:inputType="numberDecimal"
         android:imeOptions="actionDone"
+        android:lines="1"
         />
 
 </LinearLayout>

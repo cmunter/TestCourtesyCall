@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.munternet.app.courtesycall.R;
 import com.munternet.app.courtesycall.utils.WindowUtil;
 import com.sinch.android.rtc.PushPair;
@@ -37,6 +38,7 @@ public class CallScreenActivity extends BaseActivity {
     private TextView mCallDuration;
     private TextView mCallState;
     private TextView mCallerName;
+    private SpinKitView callWaitingSpinner;
 
     private PowerManager mPowerManager;
     private PowerManager.WakeLock mWakeLock;
@@ -65,6 +67,7 @@ public class CallScreenActivity extends BaseActivity {
         mCallerName = (TextView) findViewById(R.id.remoteUser);
         mCallState = (TextView) findViewById(R.id.callState);
         Button endCallButton = (Button) findViewById(R.id.hangupButton);
+        callWaitingSpinner = (SpinKitView) findViewById(R.id.callWaitingSpinner);
 
         endCallButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -158,7 +161,7 @@ public class CallScreenActivity extends BaseActivity {
         @Override
         public void onCallEnded(Call call) {
             CallEndCause cause = call.getDetails().getEndCause();
-            Log.d(TAG, "Call ended. Reason: " + cause.toString());
+            Log.i(TAG, "Call ended. Reason: " + cause.toString());
             mAudioPlayer.stopProgressTone();
             setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
             String endMsg = "Call ended: " + call.getDetails().toString();
@@ -168,15 +171,16 @@ public class CallScreenActivity extends BaseActivity {
 
         @Override
         public void onCallEstablished(Call call) {
-            Log.d(TAG, "Call established");
+            Log.i(TAG, "Call established");
             mAudioPlayer.stopProgressTone();
             mCallState.setText(call.getState().toString());
+            callWaitingSpinner.setVisibility(View.GONE);
             setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
         }
 
         @Override
         public void onCallProgressing(Call call) {
-            Log.d(TAG, "Call progressing");
+            Log.i(TAG, "Call progressing");
             mAudioPlayer.playProgressTone();
         }
 

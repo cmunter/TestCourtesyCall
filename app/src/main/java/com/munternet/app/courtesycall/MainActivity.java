@@ -3,6 +3,7 @@ package com.munternet.app.courtesycall;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.munternet.app.courtesycall.constants.CallIntentExtrasConstants;
 import com.munternet.app.courtesycall.fragments.AlarmFragment;
 import com.munternet.app.courtesycall.fragments.CallFragment;
 import com.munternet.app.courtesycall.fragments.ProfileFragment;
@@ -55,7 +57,22 @@ public class MainActivity extends BaseActivity implements SinchService.StartFail
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, PERMISSION_REQUEST_CODE);
             }
-            showWelcomeDialog(MainActivity.this);
+            showWelcomeDialog(MainActivity.this).setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    Log.i(TAG, "::OnDismissListener");
+                    userId = PreferenceUtil.readUserIdPreferences(MainActivity.this);
+                    if(userId>0) {
+                        Intent startServiceIntent = new Intent(MainActivity.this, SinchService.class);
+                        startServiceIntent.putExtra(CallIntentExtrasConstants.USER_ID, userId);
+                        startService(startServiceIntent);
+                    }
+                }
+            });
+        } else {
+            Intent startServiceIntent = new Intent(this, SinchService.class);
+            startServiceIntent.putExtra(CallIntentExtrasConstants.USER_ID, userId);
+            startService(startServiceIntent);
         }
     }
 
