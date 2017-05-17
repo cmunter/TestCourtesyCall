@@ -25,8 +25,11 @@ public class CallAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int HEADER_VIEW_TYPE = 0;
     private static final int CONTENT_VIEW_TYPE = 1;
     private SortedList<AlarmModel> alarmList;
+    private final OnCallItemClickListener listener;
 
-    public CallAdapter() {
+
+    public CallAdapter(OnCallItemClickListener mListener) {
+        listener = mListener;
         alarmList = new SortedList<>(AlarmModel.class, new SortedList.Callback<AlarmModel>() {
 
             @Override
@@ -116,7 +119,7 @@ public class CallAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             AlarmModel alarm = alarmList.get(position-1);
             CallEntryHolder callHolder = (CallEntryHolder) holder;
-            callHolder.bindHolder(alarm);
+            callHolder.bindHolder(alarm, listener);
             if(DEBUG) Log.i(TAG, "::onBindViewHolder position: " + position + ", alarm: " + alarm);
         }
     }
