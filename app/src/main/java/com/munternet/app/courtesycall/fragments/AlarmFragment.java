@@ -124,6 +124,8 @@ public class AlarmFragment extends Fragment {
 
                 if(!alarmList.isEmpty()) {
                     hideEmptyView();
+                } else {
+                    hideHeaderView();
                 }
             }
 
@@ -132,6 +134,10 @@ public class AlarmFragment extends Fragment {
 
             }
         });
+    }
+
+    private void hideHeaderView() {
+        recyclerView.getChildAt(0).setVisibility(View.GONE);
     }
 
     private void hideEmptyView() {

@@ -28,6 +28,7 @@
     <!--<color name="colorPrimaryDarker">#39221e</color>-->
     <!--Deep Orange A700-->
     <color name="colorAccent">#DD2C00</color>
+    <color name="colorAccentLight">#FF6E40</color>
 
     <color name="acceptCall">#00C853</color>
 
@@ -36,5 +37,5 @@
     <!--<color name="textSecondary">@color/colorPrimary</color>-->
     <color name="textSecondary">#78909c</color>
     <color name="textBottomNavigationDeselected">#cfd8dc</color>
-
+    <color name="textBottomNavigationSelected">@color/colorAccentLight</color>
 </resources>
