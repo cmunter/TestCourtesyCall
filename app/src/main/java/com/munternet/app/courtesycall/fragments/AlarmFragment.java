@@ -137,7 +137,8 @@ public class AlarmFragment extends Fragment {
     }
 
     private void hideHeaderView() {
-        recyclerView.getChildAt(0).setVisibility(View.GONE);
+        View headerView = recyclerView.getChildAt(0);
+        if(headerView!=null) headerView.setVisibility(View.GONE);
     }
 
     private void hideEmptyView() {

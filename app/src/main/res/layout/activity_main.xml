@@ -19,7 +19,7 @@
         app:menu="@menu/main_bottom_navigation"
         app:itemTextColor="@color/main_bottom_navigation_selector"
         app:itemIconTint="@color/main_bottom_navigation_selector"
-        android:background="@color/colorPrimaryDarker"
+        android:background="@color/bottomNavigationBackground"
         app:elevation="8dp"
         android:elevation="8dp"
         />

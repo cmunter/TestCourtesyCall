@@ -25,9 +25,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.munternet.app.courtesycall.constants.CallIntentExtrasConstants;
+import com.munternet.app.courtesycall.sinch.calling.AudioPlayer;
 import com.munternet.app.courtesycall.sinch.calling.BaseActivity;
 import com.munternet.app.courtesycall.sinch.calling.CallScreenActivity;
 import com.munternet.app.courtesycall.sinch.calling.SinchService;
+import com.munternet.app.courtesycall.utils.WindowUtil;
 import com.sinch.android.rtc.MissingPermissionException;
 import com.sinch.android.rtc.calling.Call;
 
@@ -52,6 +54,7 @@ public class OutgoingCallActivity extends BaseActivity {
     private boolean isMovementDetected = false;
     private boolean isTimeThresholdPassedWithoutMovement = false;
     private SensorEventListener listener;
+    private AudioPlayer mAudioPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +62,9 @@ public class OutgoingCallActivity extends BaseActivity {
         if (DEBUG) Log.i(TAG, "::onCreate");
 
         setContentView(R.layout.activity_outgoing_call);
+        WindowUtil.setupWindowParamsForOnTop(this);
 
+        mAudioPlayer = new AudioPlayer(this);
         if(!SILENCE_RINGTONE) ringtonePlay();
 
         final int userId = getIntent().getExtras().getInt(CallIntentExtrasConstants.USER_ID);
@@ -84,6 +89,12 @@ public class OutgoingCallActivity extends BaseActivity {
         ImageView bellImage = (ImageView) findViewById(R.id.bellImage);
         Animation mAnimation = AnimationUtils.loadAnimation(this, R.anim.bell_ringing_animation);
         bellImage.startAnimation(mAnimation);
+        bellImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopRingtone();
+            }
+        });
 
         startDetectMovement();
     }
@@ -129,8 +140,10 @@ public class OutgoingCallActivity extends BaseActivity {
         mRingtone = RingtoneManager.getRingtone(OutgoingCallActivity.this, mAlarmSound);
         mVibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
-        mRingtone.play();
-        mVibrator.vibrate(mVibratePattern, 0);
+//        mRingtone.play();
+//        mVibrator.vibrate(mVibratePattern, 0);
+
+        mAudioPlayer.playRingtone();
     }
 
     @Override
@@ -141,8 +154,10 @@ public class OutgoingCallActivity extends BaseActivity {
     }
 
     private void stopRingtone() {
-        if(mRingtone!=null) mRingtone.stop();
-        if(mVibrator!=null) mVibrator.cancel();
+//        if(mRingtone!=null) mRingtone.stop();
+//        if(mVibrator!=null) mVibrator.cancel();
+
+        mAudioPlayer.stopRingtone();
     }
 
     private void startDetectMovement() {
@@ -185,7 +200,7 @@ public class OutgoingCallActivity extends BaseActivity {
 
                     if(isMovementDetected && isTimeThresholdPassedWithoutMovement) {
                         if (DEBUG) Log.i(TAG, "::onSensorChanged() isMovementDetected");
-                        stopRingtone();
+//                        stopRingtone();
                         sensorManager.unregisterListener(listener);
                     }
                 }

@@ -14,6 +14,7 @@
         android:layout_height="96dp"
         android:src="@drawable/ic_account_circle_24dp"
         android:layout_marginBottom="32dp"
+        android:tint="@color/text"
         />
 
     <TextView
