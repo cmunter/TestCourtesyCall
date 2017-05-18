@@ -13,11 +13,9 @@
     <!--<color name="colorPrimaryDarker">#000000</color>-->
 
     <color name="colorPrimary">#eceff1</color>
-    <color name="colorPrimaryLessDark">#cfd8dc</color>
-    <color name="colorPrimaryDark">#cfd8dc</color>
-    <color name="colorPrimaryDarker">#78909c</color>
-
-
+    <color name="colorPrimaryLessDark">#f5f5f5</color>
+    <color name="colorPrimaryDark">#e0e0e0</color>
+    <color name="colorPrimaryDarker">#bdbdbd</color>
 
     <!--&lt;!&ndash;Brown 300&ndash;&gt;-->
     <!--<color name="colorPrimary">#A1887F</color>-->
@@ -35,13 +33,12 @@
     <color name="text">#000</color>
     <color name="textInverted">#FFF</color>
     <!--<color name="textSecondary">@color/colorPrimary</color>-->
-    <color name="textSecondary">#78909c</color>
-
+    <color name="textSecondary">#bdbdbd</color>
 
     <color name="windowBackground">#eceff1</color>
     <color name="cardBackground">#FFF</color>
 
-    <color name="bottomNavigationBackground">#FFF</color>
-    <color name="textBottomNavigationDeselected">#cfd8dc</color>
-    <color name="textBottomNavigationSelected">@color/text</color>
+    <color name="bottomNavigationBackground">@color/colorPrimaryDarker</color>
+    <color name="textBottomNavigationDeselected">@color/colorPrimaryDark</color>
+    <color name="textBottomNavigationSelected">@color/textInverted</color>
 </resources>

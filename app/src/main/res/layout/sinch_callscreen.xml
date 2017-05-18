@@ -11,7 +11,7 @@
         android:src="@drawable/ic_courtesy_call_24dp"
         android:contentDescription="Call background"
         android:layout_centerInParent="true"
-        android:tint="@color/colorPrimary"
+        android:tint="@color/colorPrimaryDarker"
         />
 
     <com.github.ybq.android.spinkit.SpinKitView
@@ -20,7 +20,7 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_centerInParent="true"
-        app:SpinKit_Color="@color/text" />
+        app:SpinKit_Color="@color/textInverted" />
 
     <TextView
         android:id="@+id/callState"

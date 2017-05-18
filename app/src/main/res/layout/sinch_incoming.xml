@@ -10,7 +10,7 @@
         android:src="@drawable/ic_courtesy_call_24dp"
         android:contentDescription="Call background"
         android:layout_centerInParent="true"
-        android:tint="@color/colorPrimary"
+        android:tint="@color/colorPrimaryDarker"
         />
 
     <TextView
