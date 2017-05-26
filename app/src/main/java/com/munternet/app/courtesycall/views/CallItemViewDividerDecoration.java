@@ -10,13 +10,11 @@ import android.view.View;
  * Created by chrtistianmunter on 3/17/17.
  */
 
-public class AlarmItemViewDividerDecoration extends RecyclerView.ItemDecoration {
+public class CallItemViewDividerDecoration extends RecyclerView.ItemDecoration {
 
-    private final int bottomBarHeight;
     private Drawable mDivider;
 
-    public AlarmItemViewDividerDecoration(int bottomBarHeight, Drawable divider) {
-        this.bottomBarHeight = bottomBarHeight;
+    public CallItemViewDividerDecoration(Drawable divider) {
         mDivider = divider;
     }
 
@@ -26,8 +24,6 @@ public class AlarmItemViewDividerDecoration extends RecyclerView.ItemDecoration 
 
         if (parent.getChildAdapterPosition(view) == 0) {
             return;
-        } else  if (parent.getChildAdapterPosition(view) == parent.getAdapter().getItemCount() - 1) {
-            outRect.bottom = bottomBarHeight;
         }
 
         outRect.top = mDivider.getIntrinsicHeight();

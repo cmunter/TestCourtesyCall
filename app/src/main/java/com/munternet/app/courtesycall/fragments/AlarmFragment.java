@@ -1,10 +1,12 @@
 package com.munternet.app.courtesycall.fragments;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -77,8 +79,10 @@ public class AlarmFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(alarmAdapter);
 
+        Drawable dividerDrawable = ContextCompat.getDrawable(getActivity(), R.drawable.list_divider);
         int bottomBarHeight = getResources().getDimensionPixelSize(R.dimen.alarm_list_bottom_padding);
-        recyclerView.addItemDecoration(new AlarmItemViewDividerDecoration(bottomBarHeight));
+        RecyclerView.ItemDecoration dividerItemDecoration = new AlarmItemViewDividerDecoration(bottomBarHeight, dividerDrawable);
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         prepareAlarmData();
 

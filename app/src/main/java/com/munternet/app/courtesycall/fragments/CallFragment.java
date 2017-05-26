@@ -5,9 +5,11 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.util.SortedList;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,7 +23,6 @@ import android.widget.ImageButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
@@ -35,6 +36,7 @@ import com.munternet.app.courtesycall.constants.CallIntentExtrasConstants;
 import com.munternet.app.courtesycall.oldcode.Temp;
 import com.munternet.app.courtesycall.utils.PreferenceUtil;
 import com.munternet.app.courtesycall.models.AlarmModel;
+import com.munternet.app.courtesycall.views.CallItemViewDividerDecoration;
 
 import org.joda.time.DateTime;
 
@@ -75,11 +77,11 @@ public class CallFragment extends Fragment {
             public void onItemClick(AlarmModel item, boolean isChecked) {
                 if (DEBUG) Log.i(TAG, "::onItemClick " + item + ", " + isChecked);
                 if(isChecked) {
-                    setAlarm(item);
-                    updateAlarm(item, String.valueOf(userId));
+                    setAlarmManagerAlarm(item);
+                    updateFirebaseAlarmEntry(item, String.valueOf(userId));
                 } else {
-                    removeAlarm(item);
-                    updateAlarm(item, "");
+                    removeAlarmManagerAlarm(item);
+                    updateFirebaseAlarmEntry(item, "");
                 }
             }
         };
@@ -89,6 +91,10 @@ public class CallFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(callAdapter);
+
+        Drawable dividerDrawable = ContextCompat.getDrawable(getActivity(), R.drawable.list_divider);
+        RecyclerView.ItemDecoration dividerItemDecoration = new CallItemViewDividerDecoration(dividerDrawable);
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         emptyView = rootView.findViewById(R.id.callEmptyView);
         ImageButton overflowButton = (ImageButton) rootView.findViewById(R.id.overflowButton);
@@ -288,8 +294,8 @@ public class CallFragment extends Fragment {
         });
     }
 
-    private void setAlarm(AlarmModel alarmModel) {
-        Log.i("MUNTER", "::setAlarm() " + alarmModel);
+    private void setAlarmManagerAlarm(AlarmModel alarmModel) {
+        Log.i("MUNTER", "::setAlarmManagerAlarm() " + alarmModel);
 
         Context context = getActivity();
         AlarmManager mAlarmManager = (AlarmManager)context.getSystemService(Activity.ALARM_SERVICE);
@@ -297,21 +303,23 @@ public class CallFragment extends Fragment {
         mAlarmManager.set(AlarmManager.RTC_WAKEUP, mDate, createAlarmIntent(alarmModel));
     }
 
-    private void removeAlarm(AlarmModel alarmModel) {
+    private void removeAlarmManagerAlarm(AlarmModel alarmModel) {
         Context context = getActivity();
         AlarmManager mAlarmManager = (AlarmManager)context.getSystemService(Activity.ALARM_SERVICE);
         mAlarmManager.cancel(createAlarmIntent(alarmModel));
     }
 
-    private void updateAlarm(AlarmModel alarmModel, String asignedUserId) {
+    private void updateFirebaseAlarmEntry(AlarmModel alarmModel, String assignedUserId) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        database.getReference("alarms").child(alarmModel.getId()).child("asigneeUserId").setValue(asignedUserId);
+        database.getReference("alarms").child(alarmModel.getId()).child("asigneeUserId").setValue(assignedUserId);
     }
 
     private PendingIntent createAlarmIntent(AlarmModel alarmModel) {
         Context context = getActivity();
         int userId = Integer.parseInt(alarmModel.getUserId());
         Intent intent = new Intent(context, PerformOutgoingCallReceiver.class);
+
+        // TODO test that it works by indentifying a pendingIntent by setting the action. Use-case: assign alarm and un-assign the alarm
         intent.setAction(alarmModel.getId());
         intent.putExtra(CallIntentExtrasConstants.USER_ID, userId);
         intent.putExtra(CallIntentExtrasConstants.ALARM_LABEL, alarmModel.getLabel());
