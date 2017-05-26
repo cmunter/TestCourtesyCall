@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -41,7 +43,7 @@ import java.util.List;
 public class AlarmFragment extends Fragment {
 
     private static final String TAG = AlarmFragment.class.getSimpleName();
-    private static final boolean DEBUG_ALARM_FRAGMENT_LOG = true;
+    private static final boolean DEBUG = true;
 
     private FloatingActionButton fab;
 
@@ -52,7 +54,7 @@ public class AlarmFragment extends Fragment {
     private View emptyView;
 
     public static AlarmFragment newInstance() {
-        if (DEBUG_ALARM_FRAGMENT_LOG) Log.i(TAG, "::newInstance");
+        if (DEBUG) Log.i(TAG, "::newInstance");
         return new AlarmFragment();
     }
 
@@ -90,7 +92,7 @@ public class AlarmFragment extends Fragment {
     }
 
     private void prepareAlarmData() {
-        if (DEBUG_ALARM_FRAGMENT_LOG) Log.i(TAG, "::prepareAlarmData");
+        if (DEBUG) Log.i(TAG, "::prepareAlarmData");
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         int userId = PreferenceUtil.readUserIdPreferences(getActivity());
@@ -99,16 +101,21 @@ public class AlarmFragment extends Fragment {
                 .equalTo(String.valueOf(userId));
 
         // TODO verify if this is only called when this user has changes and not other users
-        databaseUserQuery.addValueEventListener(new ValueEventListener() {
+        databaseUserQuery.addValueEventListener(alarmValueEventListener());
+        //databaseUserQuery.addChildEventListener(alarmChildEventListener());
+    }
+
+    private ValueEventListener alarmValueEventListener() {
+        return new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (DEBUG_ALARM_FRAGMENT_LOG) Log.i(TAG, "::onDataChange");
+                if (DEBUG) Log.i(TAG, "::onDataChange");
 
                 long currentTime = DateTime.now().getMillis(); // limit to alarms after this time TODO: is there a problem with time zones?
                 alarmList.clear();
                 for(DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     AlarmModel value = postSnapshot.getValue(AlarmModel.class);
-                    if (DEBUG_ALARM_FRAGMENT_LOG) Log.i(TAG, "::onDataChange " + value.getLabel() + ", " + value.getTimeInMillis());
+                    if (DEBUG) Log.i(TAG, "::onDataChange " + value.getLabel() + ", " + value.getTimeInMillis());
                     if(value.getTimeInMillis()>currentTime) {
                         alarmList.add(value);
                     }
@@ -137,8 +144,54 @@ public class AlarmFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
     }
+
+    private ChildEventListener alarmChildEventListener() {
+        return new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                AlarmModel value = dataSnapshot.getValue(AlarmModel.class);
+                if (DEBUG) Log.i(TAG, "::onChildAdded: " + value);
+                alarmList.add(value);
+                hideEmptyView();
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                AlarmModel value = dataSnapshot.getValue(AlarmModel.class);
+                if (DEBUG) Log.i(TAG, "::onChildChanged: " + value);
+
+                // alarmList.remove(value);
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                AlarmModel value = dataSnapshot.getValue(AlarmModel.class);
+                if (DEBUG) Log.i(TAG, "::onChildRemoved: " + value);
+                // callAdapter.remove(value);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                AlarmModel value = dataSnapshot.getValue(AlarmModel.class);
+//                int index = callAdapter.indexOf(value);
+//                if (DEBUG) Log.i(TAG, "::onChildMoved: " + value + ", Index: " + index + ", string: " + s);
+//
+//                if(index>=0)callAdapter.updateItemAt(index, value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                if (DEBUG) Log.i(TAG, "::onCancelled: " + databaseError.getMessage());
+            }
+        };
+    }
+
+
 
     private void hideHeaderView() {
         View headerView = recyclerView.getChildAt(0);

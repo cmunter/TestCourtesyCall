@@ -26,6 +26,7 @@ public class AlarmEntryHolder extends RecyclerView.ViewHolder {
     private TextView labelText;
     private TextView relativeTimeText;
     private TextView timeText;
+    private TextView assignedUserText;
     private SwitchCompat alarmActiveSwitch;
 
     private AlarmModel alarmModel;
@@ -36,6 +37,7 @@ public class AlarmEntryHolder extends RecyclerView.ViewHolder {
         labelText = (TextView) itemView.findViewById(R.id.alarmItemLabelText);
         relativeTimeText = (TextView) itemView.findViewById(R.id.alarmItemRelativeTime);
         timeText = (TextView) itemView.findViewById(R.id.alarmItemTime);
+        assignedUserText = (TextView) itemView.findViewById(R.id.alarmItemAssigned);
 
         alarmActiveSwitch = (SwitchCompat) itemView.findViewById(R.id.alarmItemActivatedSwitch);
         alarmActiveSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -69,6 +71,13 @@ public class AlarmEntryHolder extends RecyclerView.ViewHolder {
         setLabelText(alarm.getLabel());
         setRelativeTimeText(alarm.getRelativeTimeString(labelText.getContext()));
         setTimeText(alarm.getTimeAndDateString(labelText.getContext()));
+
+        if(!alarm.getAsigneeUserId().isEmpty()) {
+            assignedUserText.setVisibility(View.VISIBLE);
+            assignedUserText.setText("User: " + alarm.getAsigneeUserId());
+        } else {
+            assignedUserText.setVisibility(View.GONE);
+        }
     }
 
     private void setLabelText(String label) {

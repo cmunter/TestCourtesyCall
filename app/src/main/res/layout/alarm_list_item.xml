@@ -50,4 +50,19 @@
         tool:text="Fri 18:00"
         />
 
+    <TextView
+        android:drawableEnd="@drawable/ic_phone_16dp"
+        android:drawablePadding="4dp"
+        android:id="@+id/alarmItemAssigned"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/alarmItemRelativeTime"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        style="@style/TextSmall.AlarmItemTime"
+        android:textColor="@color/colorAccent"
+        tool:text="Assigned User"
+        android:layout_alignParentEnd="true"
+        />
+
 </RelativeLayout>
