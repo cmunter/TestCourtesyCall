@@ -5,4 +5,12 @@
     <string name="tab_title_call">Make call</string>
     <string name="tab_title_profile">profile</string>
     <string name="edit_alarm_delete_menu">Delete</string>
+
+    <string name="welcome_view_01_title">Welcome</string>
+    <string name="welcome_view_01_suggestion_gym">Keep delaying those gym trips?</string>
+    <string name="welcome_view_01_suggestion_books">Study books gathering dust?</string>
+    <string name="welcome_view_01_suggestion_language">New language not being practiced?</string>
+    <string name="welcome_view_01_suggestion_something_else">Or something else needs that extra bit</string>
+    <string name="welcome_view_01_description">Let us help with that</string>
+
 </resources>

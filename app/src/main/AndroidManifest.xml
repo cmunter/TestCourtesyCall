@@ -22,7 +22,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
-        android:name=".CourtesyCallApplication"
+        android:name=".app.CourtesyCallApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -30,7 +30,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
@@ -43,7 +43,7 @@
         </activity>
 
         <activity
-            android:name=".OutgoingCallActivity"
+            android:name=".ui.OutgoingCallActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             />
@@ -60,37 +60,44 @@
             />
 
         <service
-            android:name=".sinch.calling.SinchService"
+            android:name=".app.calling.SinchService"
             />
 
-         <receiver android:name=".AutoStartReceiver" >
+         <receiver android:name=".app.AutoStartReceiver" >
              <intent-filter>
                  <action android:name="android.intent.action.BOOT_COMPLETED" />
              </intent-filter>
          </receiver>
 
         <receiver
-            android:name=".PerformOutgoingCallReceiver"
+            android:name=".app.calling.PerformOutgoingCallReceiver"
             android:process=":remote" />
 
         <activity
-            android:name=".EditAlarmActivity"
-            android:parentActivityName=".MainActivity"
+            android:name=".ui.EditAlarmActivity"
+            android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait"
             >
         </activity>
 
         <activity
-            android:name=".sinch.calling.CallScreenActivity"
+            android:name=".ui.sinch.calling.CallScreenActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             />
 
         <activity
-            android:name=".sinch.calling.IncomingCallScreenActivity"
+            android:name=".ui.sinch.calling.IncomingCallScreenActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             />
+
+        <activity
+            android:name=".ui.welcomeintro.WelcomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
 
     </application>
 

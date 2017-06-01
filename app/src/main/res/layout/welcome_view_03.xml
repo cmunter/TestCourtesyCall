@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/offsetCenterView"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        />
+
+    <ImageView
+        android:id="@+id/welcomeImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_phone_24dp"
+        android:tint="@color/colorPrimary"
+        android:background="@drawable/welcome_circle_background"
+        android:padding="32dp"
+        android:layout_marginBottom="16dp"
+        android:layout_alignBottom="@id/offsetCenterView"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/welcomeHeaderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get a call"
+        style="@style/TextDisplay"
+        android:layout_below="@id/welcomeImage"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
+        />
+
+    <TextView
+        android:id="@+id/welcomeDescriptionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="At the time set, a user will call to hear how it is going"
+        android:layout_below="@id/welcomeHeaderText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/text"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center_horizontal"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="It is free and anonymous, so why no give it a try"
+        android:layout_below="@id/welcomeDescriptionText"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/text"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center_horizontal"
+        />
+
+</RelativeLayout>

@@ -12,9 +12,9 @@ import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.munternet.app.courtesycall.PerformOutgoingCallReceiver;
-import com.munternet.app.courtesycall.OutgoingCallActivity;
-import com.munternet.app.courtesycall.constants.CallIntentExtrasConstants;
+import com.munternet.app.courtesycall.app.calling.PerformOutgoingCallReceiver;
+import com.munternet.app.courtesycall.ui.OutgoingCallActivity;
+import com.munternet.app.courtesycall.app.constants.CallIntentExtrasConstants;
 
 /**
  * Created by chrtistianmunter on 4/26/17.

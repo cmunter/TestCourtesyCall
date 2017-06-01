@@ -1,11 +1,8 @@
 package com.munternet.app.courtesycall;
 
-import android.os.SystemClock;
 import android.support.v7.util.SortedList;
-import android.util.Log;
 
-import com.munternet.app.courtesycall.call.CallAdapter;
-import com.munternet.app.courtesycall.models.AlarmModel;
+import com.munternet.app.courtesycall.model.AlarmModel;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
